@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "title": "Mayank Kulkarni | AI Engineer",
+    "description": "My Portfolio Website"
+  },
+  "personal": {
+    "name": "Mayank D. Kulkarni",
+    "title": "AI Engineer",
+    "location": "Pune, Maharashtra, India",
+    "avatar": "/profile.jpg",
+    "email": "mayank.kulkarni29@gmail.com",
+    "workingHours": "Monday - Friday, 9am - 5pm IST",
+    "availableForWork": true,
+    "badges": ["AI", "Data Science", "Web Dev"],
+    "social": [
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/mayankk2904",
+        "icon": "Github"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/in/itsmayankk29/",
+        "icon": "Linkedin"
+      },
+      {
+        "platform": "Pinterest",
+        "url": "https://in.pinterest.com/mayankk_draws/",
+        "icon": "Pin"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/mayank_d_kulkarni/",
+        "icon": "Instagram"
+      }
+    ]
+  },
+  "about": {
+    "bio": "I build intelligent, real-world AI-driven solutions that address meaningful problems. Passionate about AI/ML, scalable systems, and community-driven innovation, with hands-on experience across AI, full-stack development, and problem-solving.",
+    "focus": [
+      "Building real-world impactful AI/ML-based applications",
+      "Developing scalable web and backend systems",
+      "Applying DSA to optimize performance"
+    ],
+    "languages": [
+      {
+        "name": "English",
+        "proficiency": "Fluent",
+        "level": 100,
+        "flag": "🇺🇸"
+      },
+      {
+        "name": "Marathi",
+        "proficiency": "Native",
+        "level": 100,
+        "flag": "🇪🇸"
+      },
+      {
+        "name": "Hindi",
+        "proficiency": "Native",
+        "level": 100,
+        "flag": "🇫🇷"
+      },
+      {
+        "name": "German",
+        "proficiency": "Intermediate",
+        "level": 50,
+        "flag": "🇩🇪"
+      }
+    ],
+    "interests": ["Design Systems", "Accessibility", "Typography", "Motion Design", "Photography"]
+  },
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Experience",
+      "href": "#experience"
+    },
+    {
+      "label": "Credentials",
+      "href": "#credentials"
+    },
+    {
+      "label": "Skills",
+      "href": "#skills"
+    },
+    {
+      "label": "Projects",
+      "href": "#projects"
+    }
+  ],
+  "experience": [
+    {
+      "title": "AI Engineer Intern",
+      "company": "GlideCloud Solution",
+      "period": "Jan 2026 - Present",
+      "description": "Just started my internship at GlideCloud Solution, where I'm diving into AI engineering projects. I'm excited to apply my skills and learn from real-world applications in the AI domain.",
+      "achievements": [
+        "Working on developing AI models to enhance cloud solutions",
+        "Diving into Agentic AI and its applications"
+      ],
+      "technologies": ["Agentic AI", "RAG", "LLMs", "Python"]
+    },
+    {
+      "title": "Web Development Secretary",
+      "company": "Computer Society of India, VIT Pune",
+      "period": "July 2024 - June 2025",
+      "description": "Through CSI, I've had the opportunity to collaborate with some really skilled and ambitious teams. From creating the official website, to hosting flagship events, I've gained a lot of exposure through this experience.",
+      "achievements": [
+        "Hosted Git & Github workshop for new recruits",
+        "Hosting and curation of CodeFlix 2025 - a flagship event containing a tech talk, Codezilla - tech hackathon and BugFather - a bug bounty",
+        "Led a team of coordinators to create a website for an orphanage"
+      ],
+      "technologies": ["HTML/CSS", "JavaScript", "React.js", "Figma"]
+    },
+    {
+      "title": "Academic Support Volunteer",
+      "company": "Make A Difference (MAD)",
+      "period": "Dec 2021 - Nov 2022",
+      "description": "For a year, I had the distinct privilege of volunteering with Make A Difference as an Academic Support Volunteer (ASV). It was an opportunity that ignited a spark within me, allowing me to utilize my skills in a way that directly impacted the lives of children. ",
+      "achievements": [
+        "Taught english to class 5 students",
+        "Got to know their way of life and challenges",
+        "Helped improve their academic performance and confidence"
+      ],
+      "technologies": ["Social Cause","Mentoring"]
+    },
+        {
+      "title": "Web Dev Intern",
+      "company": "Technobase IT Solutions Pvt. Ltd.",
+      "period": "July 2022 - Sept 2022",
+      "description": "Had an on-site internship experience at the Technobase IT Solutions Pvt. Ltd. The focus was to hone my programming and web development skills.",
+      "achievements": [
+        "Got to know the foundations of web development in a corporate environment",
+        "Improved my teamwork and communication skills",
+        "Designed a user management system for the company using PHP and MySQL"
+      ],
+      "technologies": ["HTML/CSS", "PHP", "MySQL"]
+    }
+  ],
+  "credentials": {
+    "certifications": [
+      {
+        "name": "IBM Data Engineering Specialization",
+        "issuer": "IBM",
+        "date": "April 2025",
+        "logo": "/ibm.jpg"
+      },
+      {
+        "name": "Fundamentals of Deep Learning",
+        "issuer": "Nvidia",
+        "date": "August 2024",
+        "logo": "/nvidia.jpg"
+      },
+      {
+        "name": "Goethe Zertifikat A2 German",
+        "issuer": "Goethe Institut",
+        "date": "Jan 2023",
+        "logo": "/goethe.jpg"
+      }
+    ],
+    "education": [
+      {
+        "degree": "BTech - Artificial Intelligence and Data Science",
+        "institution": "Vishwakarma Institute of Technology, Pune",
+        "year": "2023-2026",
+        "logo": "/vit.jpg"
+      },
+      {
+        "degree": "Diploma - Computer Engineering",
+        "institution": "Government Polytechnic, Pune",
+        "year": "2020-2023",
+        "logo": "/gpp.jpg"
+      },
+      {
+        "degree": "Schooling - SSC",
+        "institution": "Somalwar High School and Junior College, Nikalas Branch, Nagpur",
+        "year": "200-2020",
+        "logo": "/som.jpg"
+      }
+    ],
+    "awards": [
+      {
+        "title": "Winner - TE AI Cup 2025",
+        "issuer": "TE Connectivity",
+        "date": "June 2025",
+        "description": "An exciting 6 month International Hackathon, which consisted of 24 universities around the globe, 8 countries from various parts of Europe, Asia and America. My team stood 3rd globally and 1st in India, making us the only Indian team to make it to the top 3.",
+        "logo": "/csi.jpg"
+      },
+      {
+        "title": "Star of Nikalas",
+        "issuer": "Somalwar High School, Nikalas Branch",
+        "date": "February 2020",
+        "description": "Winner of Star of Nikalas - The most prestigious award of our school, given to 10-15 students from all the sections in 10th grade who perform exceptionally well throughout their schooling.",
+        "logo": "/vit.jpg"
+      }
+    ]
+  },
+  "technicalSkills": {
+    "aiml": ["Python", "TensorFlow", "PyTorch", "scikit-learn", "Pandas", "NumPy", "OpenCV", "NLTK", "Hugging Face", "RAG", "LLMs"],
+    "development": ["HTML/CSS", "JavaScript", "React", "Tailwind", "SCSS", "Git", "Responsive Design"],
+    "softSkills": ["Team Leadership", "Project Management", "Client Communication", "Mentoring", "Presentations"],
+    "backdb": ["Node.js", "Express", "MongoDB", "SQL", "PostGreSQL", "Flask", "FastAPI"]
+  }
+}
