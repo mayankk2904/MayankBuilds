@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { getNavItems, getPersonalInfo } from "@/lib/data"
 
@@ -18,24 +17,19 @@ export function PortfolioHeader() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
 
-      // Determine active section based on scroll position
       const sections = navItems.filter((item) => item.href.startsWith("#")).map((item) => item.href.substring(1))
 
-      // Find the current section in view
       for (const section of sections.reverse()) {
-        // Check from bottom to top
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
           if (rect.top <= 150) {
-            // If section is at or above 150px from viewport top
             setActiveSection(section)
             break
           }
         }
       }
 
-      // If scrolled to top, set Home as active
       if (window.scrollY < 100) {
         setActiveSection("")
       }
@@ -83,11 +77,7 @@ export function PortfolioHeader() {
                 )}
               >
                 <span className="relative z-10">{item.label}</span>
-
-                {/* Hover effect - subtle background glow */}
                 <span className="absolute inset-0 bg-orange-500/0 rounded-md group-hover:bg-orange-500/10 transition-all duration-300"></span>
-
-                {/* Hover effect - bottom border */}
                 <span
                   className={cn(
                     "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300 group-hover:w-4/5",
@@ -99,57 +89,219 @@ export function PortfolioHeader() {
           })}
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-zinc-400 hover:text-white transition-colors duration-300 relative overflow-hidden group"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-        >
-          <span className="relative z-10">{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}</span>
-          <span className="absolute inset-0 scale-0 rounded-full bg-zinc-700/50 group-hover:scale-100 transition-transform duration-300"></span>
-        </button>
+        {/* Mobile Menu Button Container */}
+        <div className="md:hidden relative">
+          <button
+            className={cn(
+              "animated-menu-button relative overflow-hidden transition-all duration-300",
+              mobileMenuOpen && "active"
+            )}
+            onClick={toggleMobileMenu}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            <span className="menu-icon">
+              <span className="menu-bar top-bar"></span>
+              <span className="menu-bar middle-bar"></span>
+              <span className="menu-bar bottom-bar"></span>
+            </span>
+          </button>
+
+          {/* Mobile Navigation Menu */}
+          <ul className={cn(
+            "mobile-nav-menu fixed top-[70px] right-4 z-40 list-none p-4 w-[200px] rounded-lg",
+            "bg-zinc-900/95 backdrop-blur-md border border-orange-500/20",
+            "shadow-xl shadow-orange-500/5",
+            mobileMenuOpen 
+              ? "opacity-100 translate-x-0 visible" 
+              : "opacity-0 translate-x-4 invisible"
+          )}>
+            {navItems.map((item) => {
+              const isActive = item.href === "/" ? activeSection === "" : activeSection === item.href.substring(1)
+
+              return (
+                <li key={item.label} className="border-b border-orange-500/10 last:border-b-0">
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "block py-3 px-2 text-base transition-all duration-300 relative group",
+                      isActive 
+                        ? "text-orange-400 font-semibold" 
+                        : "text-zinc-300 hover:text-white hover:pl-3"
+                    )}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                    <span className={cn(
+                      "absolute left-0 top-1/2 -translate-y-1/2 w-0 h-4/5 bg-gradient-to-b from-orange-400/20 to-red-500/20 rounded-r transition-all duration-300",
+                      isActive && "w-1",
+                      "group-hover:w-1"
+                    )}></span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div
-        className={cn(
-          "fixed inset-0 bg-black/95 z-40 flex flex-col pt-20 px-4 md:hidden transition-all duration-500",
-          mobileMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none",
-        )}
-      >
-        <nav className="flex flex-col space-y-4">
-          {navItems.map((item, index) => {
-            const isActive = item.href === "/" ? activeSection === "" : activeSection === item.href.substring(1)
+      {/* Global styles for the animated menu */}
+      <style jsx global>{`
+        /* Menu Button Base Styles */
+        .animated-menu-button {
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, rgb(249 115 22 / 0.1) 0%, rgb(239 68 68 / 0.1) 100%);
+          border: 1px solid rgb(249 115 22 / 0.2);
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: visible;
+        }
 
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={cn(
-                  "px-3 py-4 text-lg border-b border-zinc-800 relative group transition-all duration-300",
-                  isActive ? "text-brand border-orange-400/30" : "text-zinc-300 hover:text-white hover:pl-5",
-                )}
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  transitionDelay: `${index * 50}ms`,
-                  transform: mobileMenuOpen ? "translateX(0)" : "translateX(20px)",
-                  opacity: mobileMenuOpen ? 1 : 0,
-                }}
-              >
-                <span className="relative z-10">{item.label}</span>
+        .animated-menu-button:hover {
+          background: linear-gradient(135deg, rgb(249 115 22 / 0.2) 0%, rgb(239 68 68 / 0.2) 100%);
+          border-color: rgb(249 115 22 / 0.3);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgb(249 115 22 / 0.15);
+        }
 
-                {/* Hover effect - left border accent */}
-                <span
-                  className={cn(
-                    "absolute left-0 top-1/2 -translate-y-1/2 w-0 h-1/2 bg-gradient-to-b from-orange-400/20 to-red-500/20 transition-all duration-300 group-hover:w-1",
-                    isActive && "w-1",
-                  )}
-                ></span>
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
+        .animated-menu-button:hover .top-bar {
+          animation: menuHoverTop 0.5s 0.5s forwards;
+        }
+
+        .animated-menu-button:hover .bottom-bar {
+          animation: menuHoverBottom 0.5s 0.5s forwards;
+        }
+
+        /* Menu Icon */
+        .menu-icon {
+          position: relative;
+          width: 30px;
+          height: 20px;
+          display: block;
+        }
+
+        .menu-bar {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
+          border-radius: 2px;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .top-bar {
+          top: 0;
+          transform-origin: left center;
+        }
+
+        .middle-bar {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .bottom-bar {
+          bottom: 0;
+          transform-origin: left center;
+        }
+
+        /* Active (Open) State */
+        .animated-menu-button.active {
+          background: linear-gradient(135deg, rgb(249 115 22 / 0.3) 0%, rgb(239 68 68 / 0.3) 100%);
+          border-color: rgb(249 115 22 / 0.4);
+        }
+
+        .animated-menu-button.active .top-bar {
+          transform: rotate(45deg) translate(2px, -2px);
+          width: 100%;
+          background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
+        }
+
+        .animated-menu-button.active .middle-bar {
+          opacity: 0;
+          transform: translateY(-50%) scaleX(0);
+        }
+
+        .animated-menu-button.active .bottom-bar {
+          transform: rotate(-45deg) translate(2px, 2px);
+          width: 100%;
+          background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
+        }
+
+        /* Mobile Menu Animation */
+        .mobile-nav-menu {
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transform-origin: top right;
+        }
+
+        /* Animations */
+        @keyframes menuHoverTop {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes menuHoverBottom {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes menuActiveSlide {
+          0% {
+            opacity: 0;
+            transform: translateX(10px) translateY(-10px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+          }
+        }
+
+        /* Mobile Menu Items Animation */
+        .mobile-nav-menu li {
+          animation: menuActiveSlide 0.3s ease-out forwards;
+          opacity: 0;
+        }
+
+        .mobile-nav-menu li:nth-child(1) { animation-delay: 0.05s; }
+        .mobile-nav-menu li:nth-child(2) { animation-delay: 0.1s; }
+        .mobile-nav-menu li:nth-child(3) { animation-delay: 0.15s; }
+        .mobile-nav-menu li:nth-child(4) { animation-delay: 0.2s; }
+        .mobile-nav-menu li:nth-child(5) { animation-delay: 0.25s; }
+        .mobile-nav-menu li:nth-child(6) { animation-delay: 0.3s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+          .mobile-nav-menu {
+            position: fixed;
+            top: 70px;
+            right: 1rem;
+            left: 1rem;
+            width: auto;
+            max-width: 280px;
+            margin-left: auto;
+          }
+        }
+      `}</style>
     </header>
   )
 }
