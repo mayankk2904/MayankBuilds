@@ -11,10 +11,49 @@ import { EnhancedProfile } from "@/components/enhanced-profile"
 import { CredentialsSection } from "@/components/credentials-section"
 import { PortfolioHeader } from "@/components/portfolio-header"
 import { getExperienceInfo, getTechnicalSkillsInfo } from "@/lib/data"
+import Image from "next/image"
 
-const SkillTagComponent = ({ children }: { children: React.ReactNode }) => {
-  return <div className="px-2 py-1 bg-zinc-800 rounded-full text-xs font-medium text-zinc-400">{children}</div>
+type Skill = {
+  name: string
+  logo: string
 }
+
+const SkillTagComponent = ({ skill }: { skill: Skill }) => {
+  return (
+    <div
+      className="
+        group relative flex items-center gap-2
+        px-3 py-1.5 rounded-full
+        bg-zinc-800 text-xs font-medium text-zinc-300
+        transition-all duration-200
+        hover:bg-zinc-700
+      "
+    >
+      {/* Logo (hidden by default) */}
+      <span
+        className="
+          absolute left-2
+          opacity-0 scale-90
+          group-hover:opacity-100 group-hover:scale-100
+          transition-all duration-200
+        "
+      >
+        <Image
+          src={skill.logo}
+          alt={skill.name}
+          width={14}
+          height={14}
+        />
+      </span>
+
+      {/* Text */}
+      <span className="pl-0 group-hover:pl-5 transition-all duration-200">
+        {skill.name}
+      </span>
+    </div>
+  )
+}
+
 
 export default function Home() {
   const projects = getAllProjects()
@@ -87,7 +126,7 @@ export default function Home() {
                         <h4 className="text-sm font-medium text-zinc-400">AI and Data Science</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.aiml.map((skill, index) => (
-                            <SkillTagComponent key={index}>{skill}</SkillTagComponent>
+                            <SkillTagComponent key={index} skill={skill} />
                           ))}
                         </div>
                       </div>
@@ -98,7 +137,7 @@ export default function Home() {
                         <h4 className="text-sm font-medium text-zinc-400">Development</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.development.map((skill, index) => (
-                            <SkillTagComponent key={index}>{skill}</SkillTagComponent>
+                            <SkillTagComponent key={index} skill={skill} />
                           ))}
                         </div>
                       </div>
@@ -109,7 +148,7 @@ export default function Home() {
                         <h4 className="text-sm font-medium text-zinc-400">Backend and Databases</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.backdb.map((skill, index) => (
-                            <SkillTagComponent key={index}>{skill}</SkillTagComponent>
+                            <SkillTagComponent key={index} skill={skill} />
                           ))}
                         </div>
                       </div>
@@ -120,7 +159,12 @@ export default function Home() {
                         <h4 className="text-sm font-medium text-zinc-400">Soft Skills</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.softSkills.map((skill, index) => (
-                            <SkillTagComponent key={index}>{skill}</SkillTagComponent>
+                            <div
+                              key={index}
+                              className="px-3 py-1.5 rounded-full bg-zinc-800 text-xs font-medium text-zinc-300"
+                            >
+                              {skill}
+                            </div>
                           ))}
                         </div>
                       </div>

@@ -199,10 +199,48 @@
       }
     ]
   },
-  "technicalSkills": {
-    "aiml": ["Python", "TensorFlow", "PyTorch", "scikit-learn", "Pandas", "NumPy", "OpenCV", "NLTK", "Hugging Face", "RAG", "LLMs"],
-    "development": ["HTML/CSS", "JavaScript", "React", "Tailwind", "SCSS", "Git", "Responsive Design"],
-    "softSkills": ["Team Leadership", "Project Management", "Client Communication", "Mentoring", "Presentations"],
-    "backdb": ["Node.js", "Express", "MongoDB", "SQL", "PostGreSQL", "Flask", "FastAPI"]
-  }
+"technicalSkills": {
+  "aiml": [
+    { "name": "Python", "logo": "/logos/python.svg" },
+    { "name": "TensorFlow", "logo": "/logos/tensorflow.svg" },
+    { "name": "PyTorch", "logo": "/logos/pytorch.svg" },
+    { "name": "scikit-learn", "logo": "/logos/sklearn.svg" },
+    { "name": "Pandas", "logo": "/logos/pandas.svg" },
+    { "name": "NumPy", "logo": "/logos/numpy.svg" },
+    { "name": "OpenCV", "logo": "/logos/opencv.svg" },
+    { "name": "NLTK", "logo": "/logos/nlp.png" },
+    { "name": "Hugging Face", "logo": "/logos/huggingface.svg" },
+    { "name": "RAG", "logo": "/logos/rag.svg" },
+    { "name": "LLMs", "logo": "/logos/llm.svg" }
+  ],
+
+  "development": [
+    { "name": "HTML/CSS", "logo": "/logos/html-css.svg" },
+    { "name": "JavaScript", "logo": "/logos/javascript.svg" },
+    { "name": "React", "logo": "/logos/react.svg" },
+    { "name": "Tailwind", "logo": "/logos/tailwind.svg" },
+    { "name": "SCSS", "logo": "/logos/scss.svg" },
+    { "name": "Git", "logo": "/logos/git.svg" },
+    { "name": "Responsive Design", "logo": "/logos/responsive.svg" }
+  ],
+
+  "backdb": [
+    { "name": "Node.js", "logo": "/logos/nodejs.svg" },
+    { "name": "Express", "logo": "/logos/express.png" },
+    { "name": "MongoDB", "logo": "/logos/mongodb.svg" },
+    { "name": "SQL", "logo": "/logos/sql.svg" },
+    { "name": "PostGreSQL", "logo": "/logos/postgresql.svg" },
+    { "name": "Python Flask", "logo": "/logos/flask.png" },
+    { "name": "FastAPI", "logo": "/logos/fastapi.svg" }
+  ],
+
+  "softSkills": [
+    "Team Leadership",
+    "Project Management",
+    "Client Communication",
+    "Mentoring",
+    "Presentations"
+  ]
+}
+
 }
