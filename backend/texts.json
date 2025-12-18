@@ -1,0 +1,70 @@
+[
+  {
+    "section": "profile",
+    "content": "Name: Mayank D. Kulkarni\nTitle: AI Engineer\nLocation: Pune, Maharashtra, India\nBio: Mayank builds intelligent, real-world AI-driven solutions that address meaningful problems. He is passionate about AI/ML, scalable systems, and community-driven innovation, with hands-on experience across AI, full-stack development, and problem-solving.\nAvailability: Available for work. Working hours: Monday to Friday, 9am to 5pm IST.\nFocus Areas: Building real-world impactful AI/ML-based applications, Developing scalable web and backend systems, Applying DSA to optimize performance\nLanguages Spoken: English (Fluent), Marathi (Native), Hindi (Native), German (Intermediate, A2 certified)\nInterests: Design Systems, Accessibility, Typography, Motion Design, Photography"
+  },
+  {
+    "section": "experience",
+    "content": "Role: [EXPERIENCE] AI Engineer Intern\nCompany: GlideCloud Solution\nPeriod: January 2026 \u2013 Present\nDescription: Mayank is currently working as an AI Engineer Intern at GlideCloud Solution, focusing on AI engineering projects, Agentic AI systems, RAG pipelines, and LLM-based solutions.\nAchievements: \nTechnologies: Agentic AI, RAG, LLMs, Python"
+  },
+  {
+    "section": "experience",
+    "content": "Role: [EXPERIENCE] Web Development Secretary\nCompany: Computer Society of India, VIT Pune\nPeriod: July 2024 \u2013 June 2025\nDescription: At CSI VIT Pune, Mayank led web initiatives, organized flagship technical events, hosted Git and GitHub workshops, and collaborated with teams to build impactful web solutions.\nAchievements: \nTechnologies: HTML, CSS, JavaScript, React, Figma"
+  },
+  {
+    "section": "experience",
+    "content": "Role: [EXPERIENCE] Academic Support Volunteer\nCompany: Make A Difference (MAD)\nPeriod: December 2021 \u2013 November 2022\nDescription: Volunteered as an Academic Support Volunteer, teaching English to underprivileged students, mentoring them academically, and helping improve their confidence.\nAchievements: \nTechnologies: Mentoring, Social Impact"
+  },
+  {
+    "section": "experience",
+    "content": "Role: [EXPERIENCE] Web Development Intern\nCompany: Technobase IT Solutions Pvt. Ltd.\nPeriod: July 2022 \u2013 September 2022\nDescription: Completed an on-site web development internship focusing on PHP, MySQL, and corporate web development practices.\nAchievements: \nTechnologies: HTML, CSS, PHP, MySQL"
+  },
+  {
+    "section": "education",
+    "content": "Degree: [EDUCATION] BTech in Artificial Intelligence and Data Science\nInstitution: Vishwakarma Institute of Technology, Pune\nYears: 2023 \u2013 2026"
+  },
+  {
+    "section": "education",
+    "content": "Degree: [EDUCATION] Diploma in Computer Engineering\nInstitution: Government Polytechnic, Pune\nYears: 2020 \u2013 2023"
+  },
+  {
+    "section": "education",
+    "content": "Degree: [EDUCATION] SSC (Schooling)\nInstitution: Somalwar High School and Junior College, Nagpur\nYears: 2008 \u2013 2020"
+  },
+  {
+    "section": "certifications",
+    "content": "Certification: IBM Data Engineering Specialization (April 2025)"
+  },
+  {
+    "section": "certifications",
+    "content": "Certification: Fundamentals of Deep Learning by NVIDIA (August 2024)"
+  },
+  {
+    "section": "certifications",
+    "content": "Certification: Goethe Zertifikat A2 German (January 2023)"
+  },
+  {
+    "section": "awards",
+    "content": "Award Title: Winner \u2013 TE AI Cup 2025\nDescription: An international hackathon involving 24 universities across 8 countries. Mayank\u2019s team secured 3rd place globally and 1st in India."
+  },
+  {
+    "section": "awards",
+    "content": "Award Title: Star of Nikalas\nDescription: Prestigious school award recognizing consistent academic excellence."
+  },
+  {
+    "section": "skills",
+    "content": "AI & ML: Python, TensorFlow, PyTorch, scikit-learn, Pandas, NumPy, OpenCV, NLTK, Hugging Face, RAG, LLMs\nDevelopment: HTML, CSS, JavaScript, React, Tailwind CSS, SCSS, Git, Responsive Design\nBackend & Databases: Node.js, Express, MongoDB, SQL, PostgreSQL, Flask, FastAPI\nSoft Skills: Team Leadership, Project Management, Client Communication, Mentoring, Presentations"
+  },
+  {
+    "section": "projects",
+    "content": "Project Name: [PROJECT] PhishGuard AI - Phishing URL Detector\nDescription: A mobile and web application that detects phishing URLs using a two-phase ML and LLM-based pipeline. The first phase performs lightweight ML screening, while the second phase uses an LLM for semantic webpage analysis.\nFeatures: Real-time phishing detection, LLM-powered semantic analysis, Confidence score and explanation, 96% accuracy on benchmark datasets\nTechnologies: FastAPI, Hugging Face Spaces, Kaggle, LLMs\nRole: Lead AI Developer and UX Designer\nTimeline: 5 months"
+  },
+  {
+    "section": "projects",
+    "content": "Project Name: [PROJECT] Part Number Recognition System\nDescription: A machine vision system using Vision Transformers to identify industrial part numbers from images, with local deployment and continuous model training.\nFeatures: \nTechnologies: Vision Transformers, PyTorch, FastAPI, PostgreSQL\nRole: Frontend Developer, Model Trainer, Database Creator\nTimeline: 6 months"
+  },
+  {
+    "section": "projects",
+    "content": "Project Name: [PROJECT] YogAR - Augmented Reality Yoga App\nDescription: An AR-based mobile application that projects 3D yoga poses into real-world environments with real-time audio guidance.\nFeatures: \nTechnologies: React Native, Google AR, Blender, Supabase\nRole: UI and Database Developer\nTimeline: 6 months"
+  }
+]

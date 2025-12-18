@@ -1,0 +1,152 @@
+{
+  "profile": {
+    "name": "Mayank D. Kulkarni",
+    "title": "AI Engineer",
+    "location": "Pune, Maharashtra, India",
+    "email": "mayank.kulkarni29@gmail.com",
+    "availability": "Available for work. Working hours: Monday to Friday, 9am to 5pm IST.",
+    "bio": "Mayank builds intelligent, real-world AI-driven solutions that address meaningful problems. He is passionate about AI/ML, scalable systems, and community-driven innovation, with hands-on experience across AI, full-stack development, and problem-solving.",
+    "focus": [
+      "Building real-world impactful AI/ML-based applications",
+      "Developing scalable web and backend systems",
+      "Applying DSA to optimize performance"
+    ],
+    "languages": [
+      "English (Fluent)",
+      "Marathi (Native)",
+      "Hindi (Native)",
+      "German (Intermediate, A2 certified)"
+    ],
+    "interests": [
+      "Design Systems",
+      "Accessibility",
+      "Typography",
+      "Motion Design",
+      "Photography"
+    ],
+    "socials": {
+      "GitHub": "https://github.com/mayankk2904",
+      "LinkedIn": "https://www.linkedin.com/in/itsmayankk29/",
+      "Instagram": "https://www.instagram.com/mayank_d_kulkarni/",
+      "Pinterest": "https://in.pinterest.com/mayankk_draws/"
+    }
+  },
+
+  "experience": [
+    {
+      "role": "[EXPERIENCE] AI Engineer Intern",
+      "company": "GlideCloud Solution",
+      "period": "January 2026 – Present",
+      "description": "Mayank is currently working as an AI Engineer Intern at GlideCloud Solution, focusing on AI engineering projects, Agentic AI systems, RAG pipelines, and LLM-based solutions.",
+      "technologies": ["Agentic AI", "RAG", "LLMs", "Python"]
+    },
+    {
+      "role": "[EXPERIENCE] Web Development Secretary",
+      "company": "Computer Society of India, VIT Pune",
+      "period": "July 2024 – June 2025",
+      "description": "At CSI VIT Pune, Mayank led web initiatives, organized flagship technical events, hosted Git and GitHub workshops, and collaborated with teams to build impactful web solutions.",
+      "technologies": ["HTML", "CSS", "JavaScript", "React", "Figma"]
+    },
+    {
+      "role": "[EXPERIENCE] Academic Support Volunteer",
+      "company": "Make A Difference (MAD)",
+      "period": "December 2021 – November 2022",
+      "description": "Volunteered as an Academic Support Volunteer, teaching English to underprivileged students, mentoring them academically, and helping improve their confidence.",
+      "technologies": ["Mentoring", "Social Impact"]
+    },
+    {
+      "role": "[EXPERIENCE] Web Development Intern",
+      "company": "Technobase IT Solutions Pvt. Ltd.",
+      "period": "July 2022 – September 2022",
+      "description": "Completed an on-site web development internship focusing on PHP, MySQL, and corporate web development practices.",
+      "technologies": ["HTML", "CSS", "PHP", "MySQL"]
+    }
+  ],
+
+  "education": [
+    {
+      "degree": "[EDUCATION] BTech in Artificial Intelligence and Data Science",
+      "institution": "Vishwakarma Institute of Technology, Pune",
+      "year": "2023 – 2026"
+    },
+    {
+      "degree": "[EDUCATION] Diploma in Computer Engineering",
+      "institution": "Government Polytechnic, Pune",
+      "year": "2020 – 2023"
+    },
+    {
+      "degree": "[EDUCATION] SSC (Schooling)",
+      "institution": "Somalwar High School and Junior College, Nagpur",
+      "year": "2008 – 2020"
+    }
+  ],
+
+  "certifications": [
+    "IBM Data Engineering Specialization (April 2025)",
+    "Fundamentals of Deep Learning by NVIDIA (August 2024)",
+    "Goethe Zertifikat A2 German (January 2023)"
+  ],
+
+  "awards": [
+    {
+      "title": "Winner – TE AI Cup 2025",
+      "description": "An international hackathon involving 24 universities across 8 countries. Mayank’s team secured 3rd place globally and 1st in India."
+    },
+    {
+      "title": "Star of Nikalas",
+      "description": "Prestigious school award recognizing consistent academic excellence."
+    }
+  ],
+
+  "skills": {
+    "ai_ml": [
+      "Python", "TensorFlow", "PyTorch", "scikit-learn", "Pandas",
+      "NumPy", "OpenCV", "NLTK", "Hugging Face", "RAG", "LLMs"
+    ],
+    "development": [
+      "HTML", "CSS", "JavaScript", "React", "Tailwind CSS",
+      "SCSS", "Git", "Responsive Design"
+    ],
+    "backend_database": [
+      "Node.js", "Express", "MongoDB", "SQL",
+      "PostgreSQL", "Flask", "FastAPI"
+    ],
+    "soft_skills": [
+      "Team Leadership",
+      "Project Management",
+      "Client Communication",
+      "Mentoring",
+      "Presentations"
+    ]
+  },
+
+  "projects": [
+    {
+      "name": "[PROJECT] PhishGuard AI - Phishing URL Detector",
+      "description": "A mobile and web application that detects phishing URLs using a two-phase ML and LLM-based pipeline. The first phase performs lightweight ML screening, while the second phase uses an LLM for semantic webpage analysis.",
+      "features": [
+        "Real-time phishing detection",
+        "LLM-powered semantic analysis",
+        "Confidence score and explanation",
+        "96% accuracy on benchmark datasets"
+      ],
+      "technologies": ["FastAPI", "Hugging Face Spaces", "Kaggle", "LLMs"],
+      "role": "Lead AI Developer and UX Designer",
+      "timeline": "5 months"
+    },
+    {
+      "name": "[PROJECT] Part Number Recognition System",
+      "description": "A machine vision system using Vision Transformers to identify industrial part numbers from images, with local deployment and continuous model training.",
+      "technologies": ["Vision Transformers", "PyTorch", "FastAPI", "PostgreSQL"],
+      "role": "Frontend Developer, Model Trainer, Database Creator",
+      "timeline": "6 months"
+    },
+    {
+      "name": "[PROJECT] YogAR - Augmented Reality Yoga App",
+      "description": "An AR-based mobile application that projects 3D yoga poses into real-world environments with real-time audio guidance.",
+      "technologies": ["React Native", "Google AR", "Blender", "Supabase"],
+      "role": "UI and Database Developer",
+      "timeline": "6 months"
+    }
+  ]
+}
