@@ -4,27 +4,20 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    git \
+    build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (better caching)
+# Copy requirements
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy app code
 COPY . .
 
-# Create necessary directories
-RUN mkdir -p data
-
-# Expose port (Hugging Face uses 7860)
+# Expose port
 EXPOSE 7860
 
-# Health check
-HEALTHCHECK CMD curl --fail http://localhost:7860/health || exit 1
-
-# Run the application
-CMD ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Start the app
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]

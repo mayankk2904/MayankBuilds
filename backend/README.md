@@ -1,15 +1,19 @@
-# Portfolio RAG Backend
+---
+title: Portfolio RAG Assistant
+emoji: 🤖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+sdk_version: "3.0"
+app_file: app.py
+pinned: false
+---
 
-AI-powered Q&A system for Mayank Kulkarni's portfolio with hallucination prevention.
+# Portfolio RAG Assistant
+
+AI-powered Q&A system for portfolio with hallucination prevention.
 
 ## API Endpoints
-- `POST /chat` - Ask questions about the portfolio
-- `GET /test` - Test education hard-lock
+- `GET /` - API info
 - `GET /health` - Health check
-- `GET /` - API documentation
-
-## Local Development
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
+- `GET /test` - Test endpoint
