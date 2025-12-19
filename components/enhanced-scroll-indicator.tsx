@@ -32,7 +32,7 @@ export function EnhancedScrollIndicator() {
 
   return (
     <div
-      className={`fixed bottom-16 sm:bottom-20 right-3 sm:right-6 z-50 transition-all duration-300 ${
+      className={`fixed bottom-28 sm:bottom-32 right-3 sm:right-6 z-50 transition-all duration-300 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
       }`}
     >
