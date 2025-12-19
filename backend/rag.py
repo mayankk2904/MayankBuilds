@@ -16,6 +16,19 @@ embedder = SentenceTransformer("all-MiniLM-L6-v2")
 # ---------- INTENT DETECTION ----------
 def detect_section(question: str):
     q = question.lower()
+
+    # "AI in general" should not trigger profile section
+    if "ai in general" in q or "artificial intelligence in general" in q:
+        return None
+    
+    # "What is AI?" should not trigger any section
+    if ("what is ai" in q or "what is artificial intelligence" in q) and "mayank" not in q:
+        return None
+    
+    # "Who won" questions should not trigger any section
+    if q.startswith("who won") or q.startswith("who is the") or q.startswith("who are the"):
+        if "mayank" not in q and "his" not in q and "he" not in q:
+            return None
     
     # "Credentials" should go to education or a comprehensive response
     if "credential" in q or "qualification" in q or "background" in q:
@@ -83,10 +96,61 @@ def detect_section(question: str):
     
     return None
 
+# Add this function at the top of rag.py, right after detect_section()
+def is_out_of_context(query: str) -> bool:
+    """Check if query is clearly unrelated to Mayank's portfolio"""
+    query_lower = query.lower()
+    
+    # Clearly out-of-context topics that should be rejected immediately
+    out_of_context_keywords = [
+        "weather", "cricket", "football", "sports", "movie", "music",
+        "news", "politics", "stock", "market", "recipe", "cooking",
+        "travel", "holiday", "health", "medical", "doctor",
+        "physics", "chemistry", "biology", "math", "history",
+        "world cup", "tournament", "match", "game", "player",
+        "president", "prime minister", "government", "height", "hobby", "election"
+    ]
+    
+    # FIRST: Check for specific out-of-context patterns
+    if any(keyword in query_lower for keyword in out_of_context_keywords):
+        return True
+    
+    # SECOND: Check for general knowledge questions
+    if query_lower.startswith(("tell me about ", "explain ", "what is ")):
+        # Extract the topic
+        for prefix in ["tell me about ", "explain ", "what is "]:
+            if query_lower.startswith(prefix):
+                topic = query_lower[len(prefix):].strip()
+                # If topic doesn't contain portfolio keywords, it's out of context
+                portfolio_terms = ["mayank", "portfolio", "ai", "ml", "machine learning", "artificial intelligence"]
+                if not any(term in topic for term in portfolio_terms):
+                    return True
+                break
+    
+    # THIRD: Check for "who" questions that aren't about Mayank
+    if query_lower.startswith("who "):
+        # Allow "who is mayank" or "who is he"
+        if "mayank" in query_lower or "he" in query_lower or "his" in query_lower:
+            return False
+        # Reject all other "who" questions
+        return True
+    
+    # FOURTH: Check for general questions without "Mayank" reference
+    if not any(keyword in query_lower for keyword in ["mayank", "his", "he", "him", "portfolio"]):
+        # If it starts with question words and doesn't mention Mayank
+        question_words = ["what", "where", "when", "how", "why", "which", "whose"]
+        if any(query_lower.startswith(word + " ") for word in question_words):
+            # Check if it's asking about a person/thing not in portfolio
+            if "is" in query_lower or "are" in query_lower:
+                return True
+    
+    return False
+
 # ---------- RETRIEVAL ----------
-def retrieve_context(query: str, k: int = 3) -> str:
+def retrieve_context(query: str, k: int = 5) -> str:
+    """Retrieve context with better handling for diverse queries"""
     query_embedding = embedder.encode([query]).astype("float32")
-    _, indices = index.search(query_embedding, k * 3)
+    _, indices = index.search(query_embedding, k * 5) 
 
     target_section = detect_section(query)
 
@@ -105,6 +169,13 @@ def retrieve_context(query: str, k: int = 3) -> str:
             if doc["content"] not in selected:
                 selected.append(doc["content"])
             if len(selected) == k:
+                break
+
+    # If STILL no context, add some default profile info
+    if len(selected) == 0:
+        for doc in documents:
+            if doc["section"] == "profile":
+                selected.append(doc["content"])
                 break
 
     return "\n\n".join(selected)
@@ -453,6 +524,10 @@ def enforce_no_hallucination(answer: str, context: str) -> str:
     """Improved hallucination check"""
     answer_lower = answer.lower()
     context_lower = context.lower()
+
+        # ALLOW the standard "not available" message
+    if "this information is not available" in answer_lower:
+        return answer.strip()  # Always allow this response
     
     # BLOCK IIT and University of Mumbai hallucinations
     forbidden_institutions = [
@@ -502,23 +577,43 @@ def enforce_no_hallucination(answer: str, context: str) -> str:
     
     return answer.strip()
 
-# ---------- MAIN ANSWER FUNCTION ----------
+# Then update the answer() function to use this check first:
 def answer(query: str) -> str:
-    """Main function to answer queries with appropriate hard-locks"""
+    """Main function to answer queries with strict validation"""
+    
+    query_lower = query.lower()  # Move this to the very beginning
+    
+    # QUICK REJECT: "Who won" questions without Mayank reference
+    if query_lower.startswith("who won") and not any(keyword in query_lower for keyword in ["mayank", "his", "he"]):
+        return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
+    
+    # FIRST: Check if query is clearly out-of-context
+    if is_out_of_context(query):
+        return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
+    
     # Get context for general queries
-    context = retrieve_context(query, k=3)
+    context = retrieve_context(query, k=5)
     
     # Determine the section and use appropriate hard-lock
     section = detect_section(query)
     
+    # Special handling for "AI" queries - they should go to skills, not profile
+    if "ai" in query_lower or "artificial intelligence" in query_lower:
+        if "general" in query_lower or "in general" in query_lower:
+            # "AI in general" is out of context
+            return "This information is not available in Mayank's portfolio. If you're asking about Mayank's AI skills, please ask about his skills or experience with AI."
+        elif "what is" in query_lower and "ai" in query_lower:
+            # "What is AI?" is out of context
+            return "This information is not available in Mayank's portfolio. If you're asking about Mayank's AI skills, please ask about his skills or experience with AI."
+    
     # Check for language-specific queries first
-    query_lower = query.lower()
     language_queries = ["speak", "language", "german", "english", "hindi", "marathi", "proficiency"]
     if any(term in query_lower for term in language_queries):
         # Check if it's about spoken languages
         if "programming" not in query_lower and "code" not in query_lower and "coding" not in query_lower:
             return extract_languages(context, query)
     
+    # Use direct extraction for known sections (this is most reliable)
     if section == "education":
         return extract_education(context)
     elif section == "experience":
@@ -532,11 +627,18 @@ def answer(query: str) -> str:
     elif section == "certifications":
         return extract_certifications(context)
     elif section == "profile":
+        # Before returning profile, check if query is actually about Mayank
+        if not any(keyword in query_lower for keyword in ["mayank", "his", "he", "him"]):
+            return "This information is not available in Mayank's portfolio."
         return extract_profile(context)
     elif section == "comprehensive":
         return extract_comprehensive_credentials(context)
     else:
-        # For general queries or mixed queries, use LLM with validation
+        # For general/ambiguous queries, check context relevance
+        if len(context.strip()) < 100:  # Very little relevant context
+            return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
+        
+        # Only use LLM as a last resort
         raw_answer = generate_answer(context, query)
         return enforce_no_hallucination(raw_answer, context)
 
