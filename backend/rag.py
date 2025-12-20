@@ -3,6 +3,12 @@ import faiss
 from sentence_transformers import SentenceTransformer
 from model import generate_answer
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+USE_GEMINI = os.getenv("USE_GEMINI", "false").lower() == "true"
 
 # Load FAISS index
 index = faiss.read_index("portfolio.index")
@@ -13,10 +19,70 @@ with open("texts.json", "r", encoding="utf-8") as f:
 
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
+def is_valid_gemini_answer(answer: str, query: str) -> bool:
+    answer_lower = answer.lower()
+
+    # Hard reject empty or very short answers
+    if not answer or len(answer.strip()) < 30:
+        return False
+
+    # Allow standard refusal
+    if "not available in mayank's portfolio" in answer_lower:
+        return True
+
+    # Reject obvious generic / non-portfolio answers
+    forbidden = [
+        "generally", "in general", "as an ai", "typically",
+        "most people", "usually", "commonly"
+    ]
+    if any(f in answer_lower for f in forbidden):
+        return False
+
+    # For synthesis queries, be more lenient
+    synthesis_keywords = ["connect", "relate", "relationship", "impact"]
+    query_lower = query.lower()
+    is_synthesis_query = any(keyword in query_lower for keyword in synthesis_keywords)
+    
+    if is_synthesis_query:
+        # Synthesis answers should reference multiple aspects of the portfolio
+        portfolio_references = 0
+        portfolio_terms = [
+            "mayank", "phishguard", "part number", "yogar", "vision transformer",
+            "machine learning", "ai", "artificial intelligence", "project",
+            "education", "experience", "skill", "technology"
+        ]
+        
+        for term in portfolio_terms:
+            if term in answer_lower:
+                portfolio_references += 1
+        
+        # Require at least 2 portfolio references for synthesis
+        return portfolio_references >= 2
+
+    # Regular queries require at least ONE portfolio anchor
+    portfolio_anchors = [
+        "mayank",
+        "phishguard",
+        "part number",
+        "yogar",
+        "vision transformer",
+        "machine learning",
+        "fastapi",
+        "llm",
+        "ai"
+    ]
+
+    if not any(anchor in answer_lower for anchor in portfolio_anchors):
+        return False
+
+    return True
+
+
 # ---------- INTENT DETECTION ----------
 def detect_section(question: str):
     q = question.lower()
 
+    # Keep out-of-context filtering first
     # "AI in general" should not trigger profile section
     if "ai in general" in q or "artificial intelligence in general" in q:
         return None
@@ -29,10 +95,41 @@ def detect_section(question: str):
     if q.startswith("who won") or q.startswith("who is the") or q.startswith("who are the"):
         if "mayank" not in q and "his" not in q and "he" not in q:
             return None
-    
+
+    # ---------- COMBINATION QUERIES ----------
+    # Queries asking for multiple sections should go to comprehensive
+    if ("and" in q or "both" in q or "also" in q):
+        # Check for education + experience combinations
+        if ("education" in q and "experience" in q) or \
+           ("education" in q and "work" in q) or \
+           ("study" in q and "work" in q):
+            return "comprehensive"
+        
+        # Check for other combinations
+        sections_count = 0
+        portfolio_sections = ["education", "experience", "projects", "skills", 
+                             "background", "work", "career", "achievements"]
+        
+        for section in portfolio_sections:
+            if section in q:
+                sections_count += 1
+        
+        if sections_count >= 2:
+            return "comprehensive"
+
+    # ---------- SYNTHESIS/REASONING QUERIES ----------
+    synthesis_keywords = ["connect", "relate", "relationship", "impact", "influence", "how does", "how do"]
+    if any(keyword in q for keyword in synthesis_keywords):
+        # But ONLY if they're about Mayank's portfolio
+        if any(k in q for k in ["mayank", "his", "he", "portfolio"]):
+            return "synthesis"
+        else:
+            return None
+
+    # ---------- HARD-LOCKED SECTIONS ----------
     # "Credentials" should go to education or a comprehensive response
     if "credential" in q or "qualification" in q or "background" in q:
-        return "comprehensive"  # We'll handle this specially
+        return "comprehensive"
     
     # First, check for specific spoken languages
     spoken_languages = ["german", "english", "hindi", "marathi", "french", "spanish"]
@@ -91,7 +188,7 @@ def detect_section(question: str):
     
     if ("profile" in q or "about" in q or "bio" in q or 
         "who" in q or "introduce" in q or "background" in q or
-        "what does" in q):
+        "what does" in q or "tell me about" in q):
         return "profile"
     
     return None
@@ -121,30 +218,79 @@ def is_out_of_context(query: str) -> bool:
         for prefix in ["tell me about ", "explain ", "what is "]:
             if query_lower.startswith(prefix):
                 topic = query_lower[len(prefix):].strip()
-                # If topic doesn't contain portfolio keywords, it's out of context
-                portfolio_terms = ["mayank", "portfolio", "ai", "ml", "machine learning", "artificial intelligence"]
-                if not any(term in topic for term in portfolio_terms):
-                    return True
-                break
+                # Check if it's about Mayank or his portfolio
+                if any(term in topic for term in ["mayank", "his", "he", "him"]):
+                    return False  # It's about Mayank, so it's in context
+                
+                # Check if topic contains portfolio keywords
+                portfolio_terms = [
+                    "portfolio", "ai", "ml", "machine learning", "artificial intelligence",
+                    "education", "experience", "projects", "skills", "background",
+                    "work", "job", "career", "certification", "award"
+                ]
+                
+                if any(term in topic for term in portfolio_terms):
+                    return False  # It's portfolio-related
+                
+                # If no portfolio keywords, it's out of context
+                return True
+        return False
     
     # THIRD: Check for "who" questions that aren't about Mayank
     if query_lower.startswith("who "):
-        # Allow "who is mayank" or "who is he"
-        if "mayank" in query_lower or "he" in query_lower or "his" in query_lower:
+        # Allow "who is mayank" or "who is he" or questions about his background
+        if any(term in query_lower for term in ["mayank", "he", "his", "him", "portfolio"]):
             return False
         # Reject all other "who" questions
         return True
     
-    # FOURTH: Check for general questions without "Mayank" reference
-    if not any(keyword in query_lower for keyword in ["mayank", "his", "he", "him", "portfolio"]):
-        # If it starts with question words and doesn't mention Mayank
-        question_words = ["what", "where", "when", "how", "why", "which", "whose"]
-        if any(query_lower.startswith(word + " ") for word in question_words):
-            # Check if it's asking about a person/thing not in portfolio
-            if "is" in query_lower or "are" in query_lower:
-                return True
+    # FOURTH: Check for "tell me about" without Mayank reference but about portfolio
+    if query_lower.startswith("tell me about"):
+        # Check if it's about portfolio sections
+        portfolio_sections = [
+            "education", "experience", "projects", "skills", "background",
+            "work", "job", "career", "achievements", "certifications"
+        ]
+        if any(section in query_lower for section in portfolio_sections):
+            return False  # It's portfolio-related
     
-    return False
+    # FIFTH: Check for combination queries (experience AND education, etc.)
+    portfolio_combination_terms = [
+        "experience and education", "education and experience",
+        "projects and skills", "skills and projects",
+        "background and experience", "education and projects",
+        "work and education", "career and education"
+    ]
+    
+    if any(combo in query_lower for combo in portfolio_combination_terms):
+        return False  # Combination queries are in-context
+    
+    # SIXTH: Check for general questions without "Mayank" reference but about portfolio
+    portfolio_keywords = [
+        "education", "experience", "projects", "skills", "background",
+        "work", "job", "career", "achievement", "award", "certification",
+        "degree", "college", "university", "school", "study", "intern",
+        "role", "position", "company", "technology", "programming",
+        "development", "design", "ai", "ml", "machine learning"
+    ]
+    
+    # If query contains portfolio keywords, it's in context
+    if any(keyword in query_lower for keyword in portfolio_keywords):
+        # Additional check: make sure it's not asking about general topics
+        if "in general" in query_lower or "generally" in query_lower:
+            return True  # "AI in general" is out of context
+        return False  # Portfolio-related
+    
+    # Check for questions starting with portfolio-related question words
+    portfolio_question_patterns = [
+        "tell me about his", "what is his", "what are his",
+        "describe his", "explain his", "how is his"
+    ]
+    
+    if any(pattern in query_lower for pattern in portfolio_question_patterns):
+        return False  # Questions about "his" are in context
+    
+    return False  # Default: assume it's in context if not clearly out-of-context
 
 # ---------- RETRIEVAL ----------
 def retrieve_context(query: str, k: int = 5) -> str:
@@ -287,8 +433,8 @@ def extract_experience(context: str) -> str:
     
     return "\n".join(response)
 
-def extract_projects(context: str) -> str:
-    """Extract all project entries from context"""
+def extract_projects(context: str, query: str = "") -> str:
+    """Extract project entries from context, with support for specific project queries"""
     # Get project documents directly
     proj_docs = get_documents_by_section("projects")
     
@@ -306,6 +452,7 @@ def extract_projects(context: str) -> str:
                 name = line.replace("Project Name:", "").strip()
                 name = name.replace("[PROJECT]", "").strip()
                 entry["name"] = name
+                entry["original_name"] = name  # Keep original for matching
             elif line.startswith("Description:"):
                 entry["description"] = line.replace("Description:", "").strip()
             elif line.startswith("Technologies:"):
@@ -314,6 +461,8 @@ def extract_projects(context: str) -> str:
                 entry["role"] = line.replace("Role:", "").strip()
             elif line.startswith("Timeline:"):
                 entry["timeline"] = line.replace("Timeline:", "").strip()
+            elif line.startswith("Features:"):
+                entry["features"] = line.replace("Features:", "").strip()
         
         if entry and "name" in entry:
             project_entries.append(entry)
@@ -321,6 +470,43 @@ def extract_projects(context: str) -> str:
     if not project_entries:
         return "Project information is not available in Mayank's portfolio."
     
+    # Check if query asks for a specific project
+    query_lower = query.lower() if query else ""
+    
+    # Check for specific project mentions
+    specific_projects = {
+        "phishguard": ["phishguard", "phishing", "url detector"],
+        "yogar": ["yogar", "yoga", "augmented reality", "ar yoga"],
+        "part number": ["part number", "vision transformer", "machine vision"]
+    }
+    
+    for project_name, keywords in specific_projects.items():
+        if any(keyword in query_lower for keyword in keywords):
+            # Find the specific project
+            for proj in project_entries:
+                proj_lower = proj.get("original_name", "").lower()
+                if any(keyword in proj_lower for keyword in keywords):
+                    # Return only this project with detailed information
+                    response = [f"Mayank's Project: {proj['name']}"]
+                    
+                    if 'description' in proj and proj['description']:
+                        response.append(f"\nDescription: {proj['description']}")
+                    
+                    if 'features' in proj and proj['features']:
+                        response.append(f"\nFeatures: {proj['features']}")
+                    
+                    if 'technologies' in proj and proj['technologies']:
+                        response.append(f"\nTechnologies: {proj['technologies']}")
+                    
+                    if 'role' in proj and proj['role']:
+                        response.append(f"\nRole: {proj['role']}")
+                    
+                    if 'timeline' in proj and proj['timeline']:
+                        response.append(f"\nTimeline: {proj['timeline']}")
+                    
+                    return "\n".join(response)
+    
+    # If no specific project requested, show all projects
     response = ["Mayank's Projects:"]
     for proj in project_entries:
         response.append(f"\n{proj['name']}")
@@ -334,17 +520,6 @@ def extract_projects(context: str) -> str:
             response.append(f"  Timeline: {proj['timeline']}")
     
     return "\n".join(response)
-
-def extract_skills(context: str) -> str:
-    """Extract skills information from context"""
-    # Get skills document directly
-    skills_docs = get_documents_by_section("skills")
-    
-    if not skills_docs:
-        return "Skills information is not available in Mayank's portfolio."
-    
-    skills_content = skills_docs[0]["content"]
-    return f"Mayank's Skills:\n\n{skills_content}"
 
 def extract_awards(context: str) -> str:
     """Extract awards from context"""
@@ -407,6 +582,28 @@ def extract_certifications(context: str) -> str:
     
     return "\n".join(response)
 
+def extract_skills(context: str) -> str:
+    """Extract skills information from context"""
+    # Get skills documents directly
+    skills_docs = get_documents_by_section("skills")
+    
+    if not skills_docs:
+        return "Skills information is not available in Mayank's portfolio."
+    
+    skills_content = skills_docs[0]["content"]
+    lines = skills_content.split("\n")
+    
+    response = ["Mayank's Technical Skills:"]
+    for line in lines:
+        line = line.strip()
+        if line and not line.startswith("["):
+            response.append(f"• {line}")
+    
+    if len(response) == 1:
+        return "Skills information is not available in Mayank's portfolio."
+    
+    return "\n".join(response)
+
 def extract_profile(context: str) -> str:
     """Extract profile information from context"""
     # Get profile document directly
@@ -423,37 +620,25 @@ def extract_comprehensive_credentials(context: str) -> str:
     """Extract comprehensive credentials (education + experience + skills)"""
     response_parts = []
     
-    # Add education
+    # Check what parts are being asked for (we'll get this from query context)
+    query_lower = context.lower() if "query:" in context.lower() else ""
+    
+    # Always include education for comprehensive queries
     education = extract_education(context)
     if "Education:" in education:
         response_parts.append(education)
+    
+    # Add experience
+    experience = extract_experience(context)
+    if "Experience:" in experience:
+        response_parts.append(experience)
     
     # Add certifications
     certifications = extract_certifications(context)
     if "Certifications:" in certifications:
         response_parts.append(certifications)
     
-    # Add experience summary
-    exp_docs = get_documents_by_section("experience")
-    if exp_docs:
-        # Get current/most recent role
-        current_role = None
-        for doc in exp_docs:
-            lines = doc["content"].split("\n")
-            for line in lines:
-                line = line.strip()
-                if line.startswith("Role:"):
-                    role = line.replace("Role:", "").replace("[EXPERIENCE]", "").strip()
-                    if "Present" in doc["content"] or "present" in doc["content"].lower():
-                        current_role = role
-                        break
-            if current_role:
-                break
-        
-        if current_role:
-            response_parts.append(f"Current Role: {current_role}")
-    
-    # Add skills summary
+    # Add key skills summary
     skills_docs = get_documents_by_section("skills")
     if skills_docs:
         skills_content = skills_docs[0]["content"]
@@ -473,6 +658,10 @@ def extract_comprehensive_credentials(context: str) -> str:
     
     if not response_parts:
         return "Credential information is not available in Mayank's portfolio."
+    
+    # Add a summary at the beginning
+    summary = "Mayank's Background Summary:"
+    response_parts.insert(0, summary)
     
     return "\n\n".join(response_parts)
 
@@ -577,49 +766,156 @@ def enforce_no_hallucination(answer: str, context: str) -> str:
     
     return answer.strip()
 
-# Then update the answer() function to use this check first:
+def handle_synthesis_query(query: str, context: str) -> str:
+    """Handle synthesis/reasoning queries that connect different aspects"""
+    query_lower = query.lower()
+    
+    # For AI experience connecting to projects
+    if "ai" in query_lower and ("project" in query_lower or "connect" in query_lower or "relate" in query_lower):
+        # Get AI skills
+        skills_docs = get_documents_by_section("skills")
+        ai_skills = []
+        for doc in skills_docs:
+            lines = doc["content"].split("\n")
+            for line in lines:
+                if "AI & ML:" in line:
+                    skills_text = line.replace("AI & ML:", "").strip()
+                    ai_skills = [s.strip() for s in skills_text.split(",")]
+                    break
+        
+        # Get projects
+        project_docs = get_documents_by_section("projects")
+        projects_with_ai = []
+        for doc in project_docs:
+            content = doc["content"]
+            if any(skill.lower() in content.lower() for skill in ai_skills):
+                projects_with_ai.append(doc["content"])
+        
+        if not projects_with_ai:
+            return "This information is not available in Mayank's portfolio."
+        
+        # Create a synthesis response
+        response = ["Mayank's AI skills connect to his projects in several ways:"]
+        
+        # PhishGuard AI
+        response.append("\n1. **PhishGuard AI**:")
+        response.append("   - Uses Machine Learning for phishing URL detection")
+        response.append("   - Implements LLM-based semantic analysis")
+        response.append("   - Demonstrates AI skills in cybersecurity applications")
+        
+        # Part Number Recognition System
+        response.append("\n2. **Part Number Recognition System**:")
+        response.append("   - Uses Vision Transformers for computer vision")
+        response.append("   - Applies AI for industrial automation")
+        response.append("   - Shows practical AI implementation in manufacturing")
+        
+        response.append("\nThese projects showcase Mayank's ability to apply AI/ML technologies to solve real-world problems.")
+        return "\n".join(response)
+    
+    # For education and experience combination
+    if ("education" in query_lower and "experience" in query_lower) or \
+       ("study" in query_lower and "work" in query_lower):
+        
+        # Get education
+        education = extract_education(context)
+        
+        # Get experience
+        experience = extract_experience(context)
+        
+        # Create a combined response
+        response = ["Mayank combines his education and experience effectively:"]
+        response.append("\n" + education)
+        response.append("\n" + experience)
+        
+        # Add synthesis
+        response.append("\n**How they connect:**")
+        response.append("• His technical education provides the foundation for his AI/ML work")
+        response.append("• Hands-on experience complements academic learning")
+        response.append("• Current role allows application of both diploma and degree learnings")
+        
+        return "\n".join(response)
+    
+    # For skills and projects combination
+    if ("skill" in query_lower and "project" in query_lower) or \
+       ("technology" in query_lower and "project" in query_lower):
+        
+        skills = extract_skills(context)
+        projects = extract_projects(context, query)
+        
+        response = ["Mayank's skills directly apply to his projects:"]
+        response.append("\n" + skills)
+        response.append("\n" + projects)
+        
+        response.append("\n**Key Connections:**")
+        response.append("• AI/ML skills → PhishGuard AI and Part Number Recognition")
+        response.append("• Full-stack development → Web applications and mobile apps")
+        response.append("• Database skills → Backend systems for all projects")
+        
+        return "\n".join(response)
+    
+    # For general "tell me about" queries
+    if query_lower.startswith("tell me about"):
+        if "his" in query_lower:
+            # Check if it's asking about a specific aspect
+            if "background" in query_lower or "overview" in query_lower:
+                return extract_comprehensive_credentials(context)
+    
+    return None
+
+# Then update the answer() function to add synthesis handling:
 def answer(query: str) -> str:
-    """Main function to answer queries with strict validation"""
-    
-    query_lower = query.lower()  # Move this to the very beginning
-    
+    """Main function to answer queries with Gemini primary + RAG fallback"""
+
+    query_lower = query.lower()
+
     # QUICK REJECT: "Who won" questions without Mayank reference
-    if query_lower.startswith("who won") and not any(keyword in query_lower for keyword in ["mayank", "his", "he"]):
-        return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
-    
+    if query_lower.startswith("who won") and not any(k in query_lower for k in ["mayank", "his", "he"]):
+        return (
+            "This information is not available in Mayank's portfolio. "
+            "Please ask about Mayank's background, skills, projects, experience, or education."
+        )
+
     # FIRST: Check if query is clearly out-of-context
     if is_out_of_context(query):
-        return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
-    
-    # Get context for general queries
+        return (
+            "This information is not available in Mayank's portfolio. "
+            "Please ask about Mayank's background, skills, projects, experience, or education."
+        )
+
+    # Retrieve context
     context = retrieve_context(query, k=5)
-    
-    # Determine the section and use appropriate hard-lock
+
+    # Detect section
     section = detect_section(query)
-    
-    # Special handling for "AI" queries - they should go to skills, not profile
+
+    # Special handling for AI general questions
     if "ai" in query_lower or "artificial intelligence" in query_lower:
-        if "general" in query_lower or "in general" in query_lower:
-            # "AI in general" is out of context
-            return "This information is not available in Mayank's portfolio. If you're asking about Mayank's AI skills, please ask about his skills or experience with AI."
-        elif "what is" in query_lower and "ai" in query_lower:
-            # "What is AI?" is out of context
-            return "This information is not available in Mayank's portfolio. If you're asking about Mayank's AI skills, please ask about his skills or experience with AI."
-    
-    # Check for language-specific queries first
-    language_queries = ["speak", "language", "german", "english", "hindi", "marathi", "proficiency"]
-    if any(term in query_lower for term in language_queries):
-        # Check if it's about spoken languages
-        if "programming" not in query_lower and "code" not in query_lower and "coding" not in query_lower:
+        if "general" in query_lower or query_lower.startswith("what is"):
+            return (
+                "This information is not available in Mayank's portfolio. "
+                "If you're asking about Mayank's AI skills, please ask about his skills or experience."
+            )
+
+    # ---------- SYNTHESIS QUERIES ----------
+    if section == "synthesis":
+        synthesis_response = handle_synthesis_query(query, context)
+        if synthesis_response:
+            return synthesis_response
+        # If no specialized handler, fall through to Gemini/RAG
+
+    # Language queries (hard-locked)
+    language_terms = ["speak", "language", "german", "english", "hindi", "marathi", "proficiency"]
+    if any(t in query_lower for t in language_terms):
+        if not any(t in query_lower for t in ["programming", "coding", "code"]):
             return extract_languages(context, query)
-    
-    # Use direct extraction for known sections (this is most reliable)
+
+    # ---------- HARD-LOCKED SECTIONS ----------
     if section == "education":
         return extract_education(context)
     elif section == "experience":
         return extract_experience(context)
     elif section == "projects":
-        return extract_projects(context)
+        return extract_projects(context, query)  # Pass query for specific project handling
     elif section == "skills":
         return extract_skills(context)
     elif section == "awards":
@@ -627,20 +923,27 @@ def answer(query: str) -> str:
     elif section == "certifications":
         return extract_certifications(context)
     elif section == "profile":
-        # Before returning profile, check if query is actually about Mayank
-        if not any(keyword in query_lower for keyword in ["mayank", "his", "he", "him"]):
+        if not any(k in query_lower for k in ["mayank", "his", "he", "him"]):
             return "This information is not available in Mayank's portfolio."
         return extract_profile(context)
     elif section == "comprehensive":
         return extract_comprehensive_credentials(context)
-    else:
-        # For general/ambiguous queries, check context relevance
-        if len(context.strip()) < 100:  # Very little relevant context
-            return "This information is not available in Mayank's portfolio. Please ask about Mayank's background, skills, projects, experience, education, or other portfolio-related topics."
-        
-        # Only use LLM as a last resort
-        raw_answer = generate_answer(context, query)
-        return enforce_no_hallucination(raw_answer, context)
+
+    # ---------- GEMINI PRIMARY ----------
+    if USE_GEMINI:
+        try:
+            gemini_response = gemini_answer(query, context)
+
+            if is_valid_gemini_answer(gemini_response, query):
+                # Enforce hallucination safety one last time
+                return enforce_no_hallucination(gemini_response, context)
+
+        except Exception as e:
+            print(f"[Gemini Error] {e}")
+
+    # ---------- RAG FALLBACK (TRUSTED) ----------
+    raw_answer = generate_answer(context, query)
+    return enforce_no_hallucination(raw_answer, context)
 
 # ---------- DIRECT ACCESS FUNCTIONS ----------
 def get_all_education() -> str:

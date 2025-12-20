@@ -27,7 +27,7 @@ export default function AIChat() {
 
     try {
       const res = await fetch(
-        "https://MortalMax-portfolio-rag.hf.space/chat",
+        "https://MortalMax-portfolio-api.hf.space/chat",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
