@@ -98,6 +98,7 @@ export default function Home() {
                           description={experience.description}
                           achievements={experience.achievements}
                           technologies={experience.technologies}
+                          logo={experience.logo} // Add this
                         />
                       </AnimatedSection>
                     ))}
@@ -183,9 +184,6 @@ export default function Home() {
                       <GlobeIcon className="w-5 h-5 mr-2 text-brand" />
                       <h3 className="text-lg font-medium">Recent Projects</h3>
                     </div>
-                    <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-3">
-                      View All
-                    </Button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
