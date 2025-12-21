@@ -13,7 +13,7 @@ export default function InitialLoader({
 
   useEffect(() => {
     const startTime = Date.now()
-    const minimumDuration = 2500// 4 seconds minimum
+    const minimumDuration = 4000// 4 seconds minimum
     
     // Calculate how long to wait to reach minimum duration
     const checkAndHide = () => {
@@ -27,7 +27,7 @@ export default function InitialLoader({
     }
     
     // Text loader animation is 4 seconds, wait for it to complete
-    const timer = setTimeout(checkAndHide, 2500) // 4.5 seconds to be safe
+    const timer = setTimeout(checkAndHide, 4500) // 4.5 seconds to be safe
     
     // Safety timeout
     const safetyTimer = setTimeout(() => {
