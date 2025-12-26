@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
-import { GraduationCap, Award } from "lucide-react"
+import { GraduationCap, Trophy, Ribbon, ShieldCheck } from "lucide-react"
 import { SkillTag } from "@/components/skill-tag"
 import { AnimatedSection } from "@/components/animated-section"
 import { getCredentialsInfo } from "@/lib/data"
@@ -12,7 +12,7 @@ export function CredentialsSection() {
     <Card className="bg-zinc-900/70 border-zinc-800 backdrop-blur-sm">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center mb-4 sm:mb-6">
-          <Award className="w-5 h-5 mr-2 text-brand" />
+          <Ribbon className="w-5 h-5 mr-2 text-brand" />
           <h3 className="text-lg font-medium">Credentials</h3>
         </div>
 
@@ -21,7 +21,7 @@ export function CredentialsSection() {
           <AnimatedSection animation="fade-up" delay={100}>
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-zinc-400 flex items-center border-b border-zinc-800 pb-2">
-                <Award className="w-4 h-4 mr-2 text-brand" />
+                <ShieldCheck className="w-4 h-4 mr-2 text-brand" />
                 Professional Certifications
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
@@ -84,7 +84,7 @@ export function CredentialsSection() {
           <AnimatedSection animation="fade-up" delay={100}>
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-zinc-400 flex items-center border-b border-zinc-800 pb-2">
-                <Award className="w-4 h-4 mr-2 text-brand" />
+                <Trophy className="w-4 h-4 mr-2 text-brand" />
                 Awards & Honors
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
@@ -94,7 +94,7 @@ export function CredentialsSection() {
                       <div
                         className="w-10 h-10 mr-3 rounded-lg bg-zinc-800 flex-shrink-0
                                   grid place-items-center">
-                        <Award className="w-5 h-5 text-brand leading-none" />
+                        <Trophy className="w-5 h-5 text-brand leading-none" />
                       </div>
 
                     )}

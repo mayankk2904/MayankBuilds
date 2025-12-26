@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle2 } from "lucide-react"
+import { CircleArrowRight } from "lucide-react"
 
 interface ExperienceCardProps {
   title: string
@@ -77,12 +77,12 @@ export function ExperienceCard({
 
       <div className="space-y-2">
         <h5 className="text-sm font-medium text-zinc-400">
-          Key Achievements
+          Notable Activities
         </h5>
         <ul className="space-y-2">
           {achievements.map((item, i) => (
             <li key={i} className="flex text-sm text-zinc-300">
-              <CheckCircle2 className="w-4 h-4 mr-2 text-brand mt-0.5 flex-shrink-0" />
+              <CircleArrowRight className="w-4 h-4 mr-2 text-brand mt-0.5 flex-shrink-0" />
               <span>{item}</span>
             </li>
           ))}

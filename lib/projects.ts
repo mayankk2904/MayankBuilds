@@ -124,7 +124,7 @@ const projects: Project[] = [
   {
     id: 3,
     slug: "yogar",
-    title: "YogAR - Augmented Reality Yoga App",
+    title: "YogAR - AR based Yoga App",
     category: "Mobile App",
     shortDescription:
       "A Yoga learning app that uses Augmented Reality to guide users through yoga poses in their own environment.",

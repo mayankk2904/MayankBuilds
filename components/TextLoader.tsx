@@ -8,15 +8,14 @@ const TextLoader = () => {
   return (
     <StyledWrapper>
       <div className="loader">
-<p>Loading</p>
-<div className="words">
-  <span className="word">interfaces</span>
-  <span className="word">navigation</span>
-  <span className="word">transitions</span>
-  <span className="word">animations</span>
-  <span className="word">interfaces</span>
-</div>
-
+        <p>Loading</p>
+        <div className="words">
+          <span className="word">interfaces</span>
+          <span className="word">navigation</span>
+          <span className="word">transitions</span>
+          <span className="word">animations</span>
+          <span className="word">interfaces</span>
+        </div>
       </div>
     </StyledWrapper>
   )
