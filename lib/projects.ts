@@ -93,7 +93,7 @@ const projects: Project[] = [
       "Automates part number identification using image inputs.",
       "Allows users to contribute to and manage training data for improved model accuracy.",
       "Enables version-controlled model selection and comparison.",
-      "Maintains historical training datafor traceability and auditing.",
+      "Maintains historical training data for traceability and auditing.",
     ],
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Vision Transformers", "PyTorch", "FastAPI"],
     coverImage: "/project2-1.png",
