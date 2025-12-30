@@ -126,7 +126,7 @@ export function PortfolioHeader() {
                     className={cn(
                       "block py-3 px-2 text-base transition-all duration-300 relative group",
                       isActive 
-                        ? "text-orange-400 font-semibold" 
+                        ? "text-brand font-semibold" 
                         : "text-zinc-300 hover:text-white hover:pl-3"
                     )}
                     onClick={() => setMobileMenuOpen(false)}

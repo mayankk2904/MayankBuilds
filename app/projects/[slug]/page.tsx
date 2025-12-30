@@ -215,7 +215,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         <AnimatedSection
           animation="fade-in"
           delay={500}
-          className="mt-8 sm:mt-12 py-4 sm:py-6 text-center text-xs sm:text-sm text-zinc-500"
+          className="mt-4 sm:mt-6 py-3 sm:py-4 text-center text-xs sm:text-sm text-zinc-500"
         >
           <p>© {new Date().getFullYear()} Made with Dedication by Mayank Kulkarni</p>
         </AnimatedSection>
