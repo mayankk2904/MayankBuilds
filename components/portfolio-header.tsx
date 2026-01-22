@@ -91,7 +91,7 @@ export function PortfolioHeader() {
             })}
           </nav>
           
-          {/* Desktop Theme Toggle */}
+          {/* Desktop Theme Toggle - Updated */}
           <div className="ml-4 border-l border-border pl-4">
             <ThemeToggle />
           </div>
@@ -99,8 +99,10 @@ export function PortfolioHeader() {
 
         {/* Mobile Controls */}
         <div className="md:hidden flex items-center gap-3">
-          {/* Mobile Theme Toggle */}
-          <ThemeToggle className="md:hidden" />
+          {/* Mobile Theme Toggle - Updated */}
+          <div className="relative z-50">
+            <ThemeToggle />
+          </div>
           
           {/* Mobile Menu Button Container */}
           <div className="relative">
@@ -159,7 +161,9 @@ export function PortfolioHeader() {
               <li className="border-t border-orange-500/10 mt-3 pt-3">
                 <div className="flex items-center justify-between px-2">
                   <span className="text-muted-foreground text-sm">Theme</span>
-                  <ThemeToggle className="scale-90" />
+                  <div className="scale-90">
+                    <ThemeToggle />
+                  </div>
                 </div>
               </li>
             </ul>

@@ -1,27 +1,32 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { Sun, Moon } from "lucide-react"
 import { useEffect, useState } from "react"
+import { SwitchToggle } from "./SwitchToggle"
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => setMounted(true), [])
-  if (!mounted) return null
+
+  if (!mounted) {
+    // Return a placeholder with the same dimensions
+    return (
+      <div className="w-[4em] h-[2.2em] flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-muted animate-pulse" />
+      </div>
+    )
+  }
+
+  const isDarkMode = theme === "dark"
 
   return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-lg border bg-background hover:bg-accent transition"
-      aria-label="Toggle theme"
-    >
-      {theme === "dark" ? (
-        <Sun className="h-4 w-4" />
-      ) : (
-        <Moon className="h-4 w-4" />
-      )}
-    </button>
+    <div className="flex items-center justify-center">
+      <SwitchToggle
+        isDarkMode={isDarkMode}
+        onToggle={() => setTheme(isDarkMode ? "light" : "dark")}
+      />
+    </div>
   )
 }
