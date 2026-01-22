@@ -26,28 +26,18 @@ export default function AIChat() {
     setLoading(true)
 
     try {
-      const res = await fetch(
-        "https://MortalMax-portfolio-api.hf.space/chat",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: userMessage.content }),
-        }
-      )
+      const res = await fetch("https://MortalMax-portfolio-api.hf.space/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: userMessage.content }),
+      })
 
       const data = await res.json()
-
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: data.answer },
-      ])
+      setMessages(prev => [...prev, { role: "assistant", content: data.answer }])
     } catch {
       setMessages(prev => [
         ...prev,
-        {
-          role: "assistant",
-          content: "Sorry, something went wrong. Please try again.",
-        },
+        { role: "assistant", content: "Sorry, something went wrong. Please try again." },
       ])
     } finally {
       setLoading(false)
@@ -56,10 +46,10 @@ export default function AIChat() {
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      {/* Chat messages */}
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1 text-sm">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-sm">
         {messages.length === 0 && (
-          <p className="text-zinc-500 text-xs">
+          <p className="text-muted-foreground text-xs">
             Ask about my projects, skills, experience…
           </p>
         )}
@@ -67,20 +57,19 @@ export default function AIChat() {
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`max-w-[85%] rounded-lg px-3 py-2 whitespace-pre-wrap break-words
+            className={`max-w-[85%] rounded-lg px-3 py-2 break-words
               ${
                 m.role === "user"
                   ? "ml-auto bg-orange-500 text-black"
-                  : "mr-auto bg-zinc-800 text-zinc-200"
+                  : "mr-auto bg-muted text-foreground"
               }`}
           >
             {m.content}
           </div>
         ))}
 
-        {/* Thinking bubble */}
         {loading && (
-          <div className="mr-auto bg-zinc-800 px-3 py-2 rounded-lg text-zinc-400">
+          <div className="mr-auto bg-muted px-3 py-2 rounded-lg text-muted-foreground">
             <span className="flex gap-1">
               <span className="animate-bounce">•</span>
               <span className="animate-bounce delay-100">•</span>
@@ -93,9 +82,13 @@ export default function AIChat() {
       </div>
 
       {/* Input */}
-      <div className="shrink-0 mt-3 border-t border-zinc-800 pt-3">
+      <div className="mt-3 border-t border-border pt-3">
         <input
-          className="w-full p-2 text-sm text-black rounded-md outline-none"
+          className="
+            w-full p-2 text-sm rounded-md outline-none
+            bg-background text-foreground
+            border border-border
+          "
           placeholder="Type your question…"
           value={q}
           onChange={e => setQ(e.target.value)}
@@ -105,8 +98,10 @@ export default function AIChat() {
         <button
           onClick={ask}
           disabled={loading}
-          className="mt-2 w-full bg-orange-500 hover:bg-orange-600
-                     text-sm py-2 rounded-md transition disabled:opacity-60"
+          className="
+            mt-2 w-full bg-orange-500 hover:bg-orange-600
+            text-sm py-2 rounded-md transition disabled:opacity-60
+          "
         >
           Ask
         </button>

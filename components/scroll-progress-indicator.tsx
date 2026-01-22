@@ -8,29 +8,47 @@ export function ScrollProgressIndicator() {
   useEffect(() => {
     const updateScrollProgress = () => {
       // Calculate how far down the page the user has scrolled
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = scrollTop / docHeight
+      const scrollTop = window.scrollY || document.documentElement.scrollTop
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      
+      // Calculate total scrollable height
+      const totalScrollableHeight = docHeight - windowHeight
+      
+      // Calculate scroll percentage (clamped between 0 and 1)
+      let scrollPercent = 0
+      if (totalScrollableHeight > 0) {
+        scrollPercent = Math.min(Math.max(scrollTop / totalScrollableHeight, 0), 1)
+      }
+      
       setScrollProgress(scrollPercent)
     }
 
     // Add scroll event listener
-    window.addEventListener("scroll", updateScrollProgress)
+    window.addEventListener("scroll", updateScrollProgress, { passive: true })
+    window.addEventListener("resize", updateScrollProgress, { passive: true })
 
     // Initial calculation
     updateScrollProgress()
 
-    // Clean up event listener
-    return () => window.removeEventListener("scroll", updateScrollProgress)
+    // Clean up event listeners
+    return () => {
+      window.removeEventListener("scroll", updateScrollProgress)
+      window.removeEventListener("resize", updateScrollProgress)
+    }
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-1 bg-zinc-800 z-50">
+    <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-zinc-200 dark:bg-zinc-800">
       <div
-        className="h-full bg-gradient-to-r from-orange-500 to-red-500"
-        style={{ width: `${scrollProgress * 100}%`, transition: "width 0.1s" }}
+        className="h-full bg-[#ff5f1f] transition-all duration-150 ease-out"
+        style={{ 
+          width: `${Math.round(scrollProgress * 10000) / 100}%`,
+          transform: `scaleX(${scrollProgress})`,
+          transformOrigin: 'left'
+        }}
         role="progressbar"
-        aria-valuenow={scrollProgress * 100}
+        aria-valuenow={Math.round(scrollProgress * 100)}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Page scroll progress"

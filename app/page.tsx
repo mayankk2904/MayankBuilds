@@ -20,15 +20,16 @@ type Skill = {
 
 const SkillTagComponent = ({ skill }: { skill: Skill }) => {
   return (
-    <div
-      className="
-        group relative flex items-center gap-2
-        px-3 py-1.5 rounded-full
-        bg-zinc-800 text-xs font-medium text-zinc-300
-        transition-all duration-200
-        hover:bg-zinc-700
-      "
-    >
+<div
+  className="
+    group relative flex items-center gap-2
+    px-3 py-1.5 rounded-full
+    bg-muted text-xs font-medium text-muted-foreground
+    transition-all duration-200
+    hover:bg-accent
+  "
+>
+
       {/* Logo (hidden by default) */}
       <span
         className="
@@ -61,9 +62,16 @@ export default function Home() {
   const technicalSkills = getTechnicalSkillsInfo()
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-background text-foreground">
+
       {/* Background Grid Pattern */}
-      <div className="fixed inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:20px_20px] opacity-20 z-0"></div>
+      <div className="
+  fixed inset-0 z-0
+  bg-[radial-gradient(hsl(var(--border))_1px,transparent_1px)]
+  [background-size:20px_20px]
+  opacity-30
+"></div>
+
 
       {/* Header */}
       <PortfolioHeader />
@@ -81,7 +89,7 @@ export default function Home() {
           <div className="col-span-1 md:col-span-2 lg:col-span-3 space-y-4 sm:space-y-6">
             {/* Experience Section - Expanded */}
             <AnimatedSection animation="fade-up" id="experience">
-              <Card className="bg-zinc-900/70 border-zinc-800 backdrop-blur-sm">
+              <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center mb-4 sm:mb-6">
                     <BriefcaseBusiness className="w-5 h-5 mr-2 text-[#FF5F1F]" />
@@ -114,7 +122,7 @@ export default function Home() {
 
             {/* Skills Section */}
             <AnimatedSection animation="fade-up" id="skills">
-              <Card className="bg-zinc-900/70 border-zinc-800 backdrop-blur-sm">
+              <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center mb-4">
                     <FileCode className="w-5 h-5 mr-2 text-brand" />
@@ -124,7 +132,7 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <AnimatedSection animation="slide-right" delay={100}>
                       <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-400">AI and Data Science</h4>
+                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">AI and Data Science</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.aiml.map((skill, index) => (
                             <SkillTagComponent key={index} skill={skill} />
@@ -135,7 +143,7 @@ export default function Home() {
 
                     <AnimatedSection animation="slide-left" delay={200}>
                       <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-400">Development</h4>
+                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Development</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.development.map((skill, index) => (
                             <SkillTagComponent key={index} skill={skill} />
@@ -146,7 +154,7 @@ export default function Home() {
 
                     <AnimatedSection animation="slide-right" delay={100}>
                       <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-400">Backend and Databases</h4>
+                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Backend and Databases</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.backdb.map((skill, index) => (
                             <SkillTagComponent key={index} skill={skill} />
@@ -157,12 +165,12 @@ export default function Home() {
 
                     <AnimatedSection animation="slide-left" delay={400}>
                       <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-400">Soft Skills</h4>
+                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Soft Skills</h4>
                         <div className="flex flex-wrap gap-2">
                           {technicalSkills.softSkills.map((skill, index) => (
                             <div
                               key={index}
-                              className="px-3 py-1.5 rounded-full bg-zinc-800 text-xs font-medium text-zinc-300"
+                              className="px-3 py-1.5 rounded-full bg-muted text-xs font-medium text-muted-foreground"
                             >
                               {skill}
                             </div>
@@ -177,7 +185,7 @@ export default function Home() {
 
             {/* Projects Section */}
             <AnimatedSection animation="fade-up" id="projects">
-              <Card className="bg-zinc-900/70 border-zinc-800 backdrop-blur-sm">
+              <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
                     <div className="flex items-center">

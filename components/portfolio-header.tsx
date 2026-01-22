@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { getNavItems, getPersonalInfo } from "@/lib/data"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function PortfolioHeader() {
   const [scrolled, setScrolled] = useState(false)
@@ -47,7 +48,7 @@ export function PortfolioHeader() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4",
-        scrolled ? "bg-zinc-900/90 backdrop-blur-md shadow-md py-2" : "bg-transparent",
+        scrolled ? "bg-background/90 backdrop-blur-md shadow-md py-2 border-b border-border" : "bg-transparent",
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -57,91 +58,112 @@ export function PortfolioHeader() {
             {personalInfo.name}
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300 group-hover:w-full"></span>
           </div>
-          <span className="text-zinc-400 text-sm ml-2 hidden sm:inline-block transition-all duration-300 group-hover:text-zinc-300">
+          <span className="text-muted-foreground text-sm ml-2 hidden sm:inline-block transition-all duration-300 group-hover:text-foreground">
             / {personalInfo.title}
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          {navItems.map((item) => {
-            const isActive = item.href === "/" ? activeSection === "" : activeSection === item.href.substring(1)
-
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={cn(
-                  "px-3 py-2 text-sm relative group transition-all duration-300",
-                  isActive ? "text-brand" : "text-zinc-400 hover:text-white",
-                )}
-              >
-                <span className="relative z-10">{item.label}</span>
-                <span className="absolute inset-0 bg-orange-500/0 rounded-md group-hover:bg-orange-500/10 transition-all duration-300"></span>
-                <span
-                  className={cn(
-                    "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300 group-hover:w-4/5",
-                    isActive && "w-4/5",
-                  )}
-                ></span>
-              </Link>
-            )
-          })}
-        </nav>
-
-        {/* Mobile Menu Button Container */}
-        <div className="md:hidden relative">
-          <button
-            className={cn(
-              "animated-menu-button relative overflow-hidden transition-all duration-300",
-              mobileMenuOpen && "active"
-            )}
-            onClick={toggleMobileMenu}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-          >
-            <span className="menu-icon">
-              <span className="menu-bar top-bar"></span>
-              <span className="menu-bar middle-bar"></span>
-              <span className="menu-bar bottom-bar"></span>
-            </span>
-          </button>
-
-          {/* Mobile Navigation Menu */}
-          <ul className={cn(
-            "mobile-nav-menu fixed top-[70px] right-4 z-40 list-none p-4 w-[200px] rounded-lg",
-            "bg-zinc-900/95 backdrop-blur-md border border-orange-500/20",
-            "shadow-xl shadow-orange-500/5",
-            mobileMenuOpen 
-              ? "opacity-100 translate-x-0 visible" 
-              : "opacity-0 translate-x-4 invisible"
-          )}>
+        {/* Desktop Navigation with Theme Toggle */}
+        <div className="hidden md:flex items-center space-x-1">
+          <nav className="flex items-center space-x-1">
             {navItems.map((item) => {
               const isActive = item.href === "/" ? activeSection === "" : activeSection === item.href.substring(1)
 
               return (
-                <li key={item.label} className="border-b border-orange-500/10 last:border-b-0">
-                  <Link
-                    href={item.href}
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={cn(
+                    "px-3 py-2 text-sm relative group transition-all duration-300",
+                    isActive ? "text-brand" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  <span className="absolute inset-0 bg-orange-500/0 rounded-md group-hover:bg-orange-500/10 transition-all duration-300"></span>
+                  <span
                     className={cn(
-                      "block py-3 px-2 text-base transition-all duration-300 relative group",
-                      isActive 
-                        ? "text-brand font-semibold" 
-                        : "text-zinc-300 hover:text-white hover:pl-3"
+                      "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300 group-hover:w-4/5",
+                      isActive && "w-4/5",
                     )}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="relative z-10">{item.label}</span>
-                    <span className={cn(
-                      "absolute left-0 top-1/2 -translate-y-1/2 w-0 h-4/5 bg-gradient-to-b from-orange-400/20 to-red-500/20 rounded-r transition-all duration-300",
-                      isActive && "w-1",
-                      "group-hover:w-1"
-                    )}></span>
-                  </Link>
-                </li>
+                  ></span>
+                </Link>
               )
             })}
-          </ul>
+          </nav>
+          
+          {/* Desktop Theme Toggle */}
+          <div className="ml-4 border-l border-border pl-4">
+            <ThemeToggle />
+          </div>
+        </div>
+
+        {/* Mobile Controls */}
+        <div className="md:hidden flex items-center gap-3">
+          {/* Mobile Theme Toggle */}
+          <ThemeToggle className="md:hidden" />
+          
+          {/* Mobile Menu Button Container */}
+          <div className="relative">
+            <button
+              className={cn(
+                "animated-menu-button relative overflow-hidden transition-all duration-300",
+                mobileMenuOpen && "active"
+              )}
+              onClick={toggleMobileMenu}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className="menu-icon">
+                <span className="menu-bar top-bar"></span>
+                <span className="menu-bar middle-bar"></span>
+                <span className="menu-bar bottom-bar"></span>
+              </span>
+            </button>
+
+            {/* Mobile Navigation Menu */}
+            <ul className={cn(
+              "mobile-nav-menu fixed top-[70px] right-4 z-40 list-none p-4 w-[200px] rounded-lg",
+              "bg-card/95 backdrop-blur-md border border-orange-500/20",
+              "shadow-xl shadow-orange-500/5",
+              mobileMenuOpen 
+                ? "opacity-100 translate-x-0 visible" 
+                : "opacity-0 translate-x-4 invisible"
+            )}>
+              {navItems.map((item) => {
+                const isActive = item.href === "/" ? activeSection === "" : activeSection === item.href.substring(1)
+
+                return (
+                  <li key={item.label} className="border-b border-orange-500/10 last:border-b-0">
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "block py-3 px-2 text-base transition-all duration-300 relative group",
+                        isActive 
+                          ? "text-brand font-semibold" 
+                          : "text-muted-foreground hover:text-foreground hover:pl-3"
+                      )}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="relative z-10">{item.label}</span>
+                      <span className={cn(
+                        "absolute left-0 top-1/2 -translate-y-1/2 w-0 h-4/5 bg-gradient-to-b from-orange-400/20 to-red-500/20 rounded-r transition-all duration-300",
+                        isActive && "w-1",
+                        "group-hover:w-1"
+                      )}></span>
+                    </Link>
+                  </li>
+                )
+              })}
+              
+              {/* Theme Toggle in Mobile Menu (optional) */}
+              <li className="border-t border-orange-500/10 mt-3 pt-3">
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-muted-foreground text-sm">Theme</span>
+                  <ThemeToggle className="scale-90" />
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -288,6 +310,7 @@ export function PortfolioHeader() {
         .mobile-nav-menu li:nth-child(4) { animation-delay: 0.2s; }
         .mobile-nav-menu li:nth-child(5) { animation-delay: 0.25s; }
         .mobile-nav-menu li:nth-child(6) { animation-delay: 0.3s; }
+        .mobile-nav-menu li:nth-child(7) { animation-delay: 0.35s; }
 
         /* Responsive adjustments */
         @media (max-width: 640px) {

@@ -1,4 +1,3 @@
-// components/InitialLoader.tsx - Alternative simpler version
 "use client"
 
 import { useEffect, useState } from "react"
@@ -13,8 +12,8 @@ export default function InitialLoader({
 
   useEffect(() => {
     const startTime = Date.now()
-    const minimumDuration = 4000// 4 seconds minimum
-    
+    const minimumDuration = 4000 // 4 seconds minimum
+
     // Calculate how long to wait to reach minimum duration
     const checkAndHide = () => {
       const elapsed = Date.now() - startTime
@@ -25,10 +24,10 @@ export default function InitialLoader({
         setTimeout(() => setLoading(false), minimumDuration - elapsed)
       }
     }
-    
+
     // Text loader animation is 4 seconds, wait for it to complete
     const timer = setTimeout(checkAndHide, 4500) // 4.5 seconds to be safe
-    
+
     // Safety timeout
     const safetyTimer = setTimeout(() => {
       setLoading(false)
@@ -47,7 +46,13 @@ export default function InitialLoader({
 
       {/* LOADER OVERLAY */}
       {loading && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black">
+        <div
+          className="
+            fixed inset-0 z-[9999] flex items-center justify-center
+            bg-white text-black
+            dark:bg-background dark:text-foreground
+          "
+        >
           <CombinedLoader />
         </div>
       )}
