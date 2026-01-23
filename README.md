@@ -1,11 +1,38 @@
-# My Portfolio
+# 🌐 Personal Portfolio
 
-This is my official portfolio codebase. Tech stack used:
-- Frontend: TypeScript + Next
-- Backend: Python and Flask
-- Data Storage: JSON
+Welcome to my personal portfolio repository!  
+This website showcases my **projects, skills, and experience** in **AI Engineering, Machine Learning, and Full-Stack Development**.
 
-## How to Run the code
-- Use command: npm run dev
+🔗 **Live Website:** https://mayankbuilds.vercel.app/  
 
+---
 
+## 👋 About Me
+
+Hi, I’m **Mayank Kulkarni**, an aspiring **AI Engineer & Full-Stack Developer** with a strong interest in building intelligent, scalable, and user-centric applications.
+
+I enjoy working at the intersection of **AI + software engineering**, and I love turning ideas into real-world products.
+
+---
+
+## 🛠️ Tech Stack
+
+### 💻 Frontend
+- Next.js  
+- TypeScript  
+- Tailwind CSS   
+
+### ⚙️ Backend
+- Flask
+- Python
+
+### 🤖 AI / ML
+- Machine Learning & Deep Learning   
+- LLMs (Gemma) 
+
+### 🚀 Tools & Platforms hosted on
+- Git & GitHub   
+- Hugging Face  
+- Vercel 
+
+---
