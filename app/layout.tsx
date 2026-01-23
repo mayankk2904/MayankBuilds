@@ -9,6 +9,7 @@ import AIChatWidget from "@/components/ai-chat-widget"
 import InitialLoader from "@/components/InitialLoader"
 import StyledComponentsRegistry from "@/app/registry"
 import { ThemeProvider } from "@/components/theme-provider"
+import { CopyProtection } from "@/components/copy-protection" 
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <CopyProtection /> {/* Add this line */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

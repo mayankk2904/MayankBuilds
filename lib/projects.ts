@@ -62,6 +62,7 @@ const projects: Project[] = [
     timeline: "5 months",
     role: "Lead AI Developer and UX Designer",
     liveUrl: "https://huggingface.co/spaces/MortalMax/PhishGuard",
+    githubUrl: "https://github.com/mayankk2904/PhishGuard-AI",
     relatedProjects: [
       {
         slug: "part-number",
@@ -152,6 +153,7 @@ const projects: Project[] = [
     client: "Personal Project",
     timeline: "6 months",
     role: "UI and Database Developer",
+    githubUrl: "https://github.com/mayankk2904/YogAR",
     relatedProjects: [
       {
         slug: "phish-guard",
