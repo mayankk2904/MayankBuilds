@@ -16,7 +16,7 @@ export function EnhancedProfile() {
   const aboutInfo = getAboutInfo()
 
   return (
-    <Card className="bg-card border-border backdrop-blur-sm col-span-1 flex flex-col">
+    <Card className="bg-card border-border backdrop-blur-sm col-span-1 flex flex-col overflow-hidden">
       <CardContent className="p-0">
         {/* Profile Header */}
         <div className="bg-muted p-4 sm:p-6 flex flex-col items-center border-b border-border">
