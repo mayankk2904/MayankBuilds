@@ -72,7 +72,7 @@ const projects: Project[] = [
       },
       {
         slug: "yogar",
-        title: "YogAR - Augmented Reality Yoga App",
+        title: "YogAR - AR based Yoga App",
         category: "Mobile App",
         image: "/proj3.png",
       },
@@ -116,7 +116,7 @@ const projects: Project[] = [
       },
       {
         slug: "yogar",
-        title: "YogAR - Augmented Reality Yoga App",
+        title: "YogAR - AR based Yoga App",
         category: "Mobile App",
         image: "/proj3.png",
       },
