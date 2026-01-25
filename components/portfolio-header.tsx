@@ -175,8 +175,8 @@ export function PortfolioHeader() {
       <style jsx global>{`
         /* Menu Button Base Styles */
         .animated-menu-button {
-          width: 44px;
-          height: 44px;
+          width: 40px;
+          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -187,6 +187,7 @@ export function PortfolioHeader() {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: visible;
+          padding: 0;
         }
 
         .animated-menu-button:hover {
@@ -204,11 +205,11 @@ export function PortfolioHeader() {
           animation: menuHoverBottom 0.5s 0.5s forwards;
         }
 
-        /* Menu Icon */
+        /* Menu Icon - Smaller and more refined */
         .menu-icon {
           position: relative;
-          width: 30px;
-          height: 20px;
+          width: 24px;
+          height: 16px;
           display: block;
         }
 
@@ -216,15 +217,15 @@ export function PortfolioHeader() {
           position: absolute;
           left: 0;
           width: 100%;
-          height: 3px;
+          height: 2px;
           background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
-          border-radius: 2px;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 1px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .top-bar {
           top: 0;
-          transform-origin: left center;
+          transform-origin: center;
         }
 
         .middle-bar {
@@ -234,7 +235,7 @@ export function PortfolioHeader() {
 
         .bottom-bar {
           bottom: 0;
-          transform-origin: left center;
+          transform-origin: center;
         }
 
         /* Active (Open) State */
@@ -244,7 +245,7 @@ export function PortfolioHeader() {
         }
 
         .animated-menu-button.active .top-bar {
-          transform: rotate(45deg) translate(2px, -2px);
+          transform: rotate(45deg) translate(4px, 4px);
           width: 100%;
           background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
         }
@@ -255,14 +256,14 @@ export function PortfolioHeader() {
         }
 
         .animated-menu-button.active .bottom-bar {
-          transform: rotate(-45deg) translate(2px, 2px);
+          transform: rotate(-45deg) translate(4px, -4px);
           width: 100%;
           background: linear-gradient(to right, rgb(249 115 22) 0%, rgb(239 68 68) 100%);
         }
 
         /* Mobile Menu Animation */
         .mobile-nav-menu {
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           transform-origin: top right;
         }
 
@@ -272,7 +273,7 @@ export function PortfolioHeader() {
             transform: translateY(0);
           }
           50% {
-            transform: translateY(8px);
+            transform: translateY(6px);
           }
           100% {
             transform: translateY(0);
@@ -284,7 +285,7 @@ export function PortfolioHeader() {
             transform: translateY(0);
           }
           50% {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
           }
           100% {
             transform: translateY(0);
@@ -316,16 +317,91 @@ export function PortfolioHeader() {
         .mobile-nav-menu li:nth-child(6) { animation-delay: 0.3s; }
         .mobile-nav-menu li:nth-child(7) { animation-delay: 0.35s; }
 
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
+        /* Responsive adjustments for tablets and phones */
+        @media (max-width: 768px) {
+          .animated-menu-button {
+            width: 38px;
+            height: 38px;
+          }
+          
+          .menu-icon {
+            width: 22px;
+            height: 14px;
+          }
+          
           .mobile-nav-menu {
-            position: fixed;
-            top: 70px;
+            top: 65px;
             right: 1rem;
             left: 1rem;
             width: auto;
             max-width: 280px;
             margin-left: auto;
+            padding: 1rem;
+            font-size: 0.95rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .animated-menu-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+          }
+          
+          .menu-icon {
+            width: 20px;
+            height: 12px;
+          }
+          
+          .menu-bar {
+            height: 1.5px;
+          }
+          
+          .animated-menu-button.active .top-bar {
+            transform: rotate(45deg) translate(3px, 3px);
+          }
+          
+          .animated-menu-button.active .bottom-bar {
+            transform: rotate(-45deg) translate(3px, -3px);
+          }
+          
+          .mobile-nav-menu {
+            top: 60px;
+            right: 0.75rem;
+            left: 0.75rem;
+            max-width: calc(100vw - 1.5rem);
+            padding: 0.75rem;
+          }
+          
+          .mobile-nav-menu li a {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.9rem;
+          }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 360px) {
+          .animated-menu-button {
+            width: 34px;
+            height: 34px;
+          }
+          
+          .menu-icon {
+            width: 18px;
+            height: 10px;
+          }
+          
+          .mobile-nav-menu {
+            top: 58px;
+          }
+        }
+
+        /* Adjust for landscape mode on phones */
+        @media (max-height: 500px) and (orientation: landscape) {
+          .mobile-nav-menu {
+            max-height: 70vh;
+            overflow-y: auto;
+            top: 65px;
           }
         }
       `}</style>

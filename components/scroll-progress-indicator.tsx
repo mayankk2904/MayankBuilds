@@ -39,7 +39,7 @@ export function ScrollProgressIndicator() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-zinc-200 dark:bg-zinc-800">
+    <div className="fixed top-0 left-0 right-0 h-1 z-[100] bg-zinc-200 dark:bg-zinc-800">
       <div
         className="h-full bg-[#ff5f1f] transition-all duration-150 ease-out"
         style={{ 
