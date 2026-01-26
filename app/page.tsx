@@ -92,7 +92,7 @@ export default function Home() {
               <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center mb-4 sm:mb-6">
-                    <BriefcaseBusiness className="w-5 h-5 mr-2 text-[#FF5F1F]" />
+                    <BriefcaseBusiness className="w-5 h-5 mr-2 text-brand" />
                     <h3 className="text-lg font-medium">Experience</h3>
                   </div>
 
