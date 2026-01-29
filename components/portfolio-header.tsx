@@ -76,20 +76,34 @@ useEffect(() => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo Image */}
         <Link href="/" className="flex items-center group">
-          <div
-            ref={logoRef}
-            className="relative will-change-transform transition-transform duration-75"
-          >
-            <Image
-              src="/logos/favicon.png"
-              alt="MK Logo"
-              width={40}
-              height={40}
-              priority
-              className="h-10 w-auto md:h-12"
-            />
+          <div className="relative h-10 w-10 md:h-12 md:w-12">
+            
+            {/* 🔁 ROTATING WHEEL */}
+            <div
+              ref={logoRef}
+              className="absolute inset-0 will-change-transform transition-transform duration-75"
+            >
+              <Image
+                src="/logos/wheel1.png"   // 🔁 outer ring image
+                alt="MK Wheel"
+                fill
+                priority
+              />
+            </div>
+
+            {/* 🧷 FIXED CENTER LOGO */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <Image
+                src="/logos/center.png"  // 🧷 MK center image
+                alt="MK Center"
+                width={18}
+                height={18}
+              />
+            </div>
+
           </div>
         </Link>
+
 
         {/* Desktop Navigation with Theme Toggle */}
         <div className="hidden md:flex items-center space-x-1">
