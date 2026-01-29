@@ -2,43 +2,65 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { getNavItems, getPersonalInfo } from "@/lib/data"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useRef } from "react"
+
 
 export function PortfolioHeader() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
+  const logoRef = useRef<HTMLDivElement | null>(null)
+  const lastScrollY = useRef(0)
+  const rotation = useRef(0)
+
 
   const navItems = getNavItems()
   const personalInfo = getPersonalInfo()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY
+    setScrolled(currentScrollY > 20)
 
-      const sections = navItems.filter((item) => item.href.startsWith("#")).map((item) => item.href.substring(1))
+    /* 🔁 LOGO ROTATION BASED ON SCROLL */
+    const delta = currentScrollY - lastScrollY.current
+    rotation.current += delta * 0.25 // adjust sensitivity here
 
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          if (rect.top <= 150) {
-            setActiveSection(section)
-            break
-          }
+    if (logoRef.current) {
+      logoRef.current.style.transform = `rotate(${rotation.current}deg)`
+    }
+
+    lastScrollY.current = currentScrollY
+
+    /* 🔹 ACTIVE SECTION LOGIC (unchanged) */
+    const sections = navItems
+      .filter((item) => item.href.startsWith("#"))
+      .map((item) => item.href.substring(1))
+
+    for (const section of sections.reverse()) {
+      const element = document.getElementById(section)
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        if (rect.top <= 150) {
+          setActiveSection(section)
+          break
         }
-      }
-
-      if (window.scrollY < 100) {
-        setActiveSection("")
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [navItems])
+    if (currentScrollY < 100) {
+      setActiveSection("")
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll, { passive: true })
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [navItems])
+
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -52,15 +74,21 @@ export function PortfolioHeader() {
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* Logo/Name */}
+        {/* Logo Image */}
         <Link href="/" className="flex items-center group">
-          <div className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 font-bold text-xl relative overflow-hidden transition-transform duration-300 group-hover:scale-105">
-            {personalInfo.name}
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 transition-all duration-300 group-hover:w-full"></span>
+          <div
+            ref={logoRef}
+            className="relative will-change-transform transition-transform duration-75"
+          >
+            <Image
+              src="/logos/favicon.png"
+              alt="MK Logo"
+              width={40}
+              height={40}
+              priority
+              className="h-10 w-auto md:h-12"
+            />
           </div>
-          <span className="text-muted-foreground text-sm ml-2 hidden sm:inline-block transition-all duration-300 group-hover:text-foreground">
-            / {personalInfo.title}
-          </span>
         </Link>
 
         {/* Desktop Navigation with Theme Toggle */}
@@ -91,7 +119,7 @@ export function PortfolioHeader() {
             })}
           </nav>
           
-          {/* Desktop Theme Toggle - Updated */}
+          {/* Desktop Theme Toggle */}
           <div className="ml-4 border-l border-border pl-4">
             <ThemeToggle />
           </div>
@@ -99,7 +127,12 @@ export function PortfolioHeader() {
 
         {/* Mobile Controls */}
         <div className="md:hidden flex items-center gap-3">
-          {/* Mobile Theme Toggle - Updated */}
+          {/* Optional: Show mini title on mobile if you want */}
+          {/* <span className="text-xs text-muted-foreground truncate max-w-[100px]">
+            {personalInfo.title}
+          </span> */}
+          
+          {/* Mobile Theme Toggle */}
           <div className="relative z-50">
             <ThemeToggle />
           </div>
@@ -404,6 +437,7 @@ export function PortfolioHeader() {
             top: 65px;
           }
         }
+
       `}</style>
     </header>
   )
