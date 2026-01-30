@@ -8,6 +8,7 @@ import { SocialLinks } from "@/components/social-links"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { User, MapPin, Mail, Languages, Clock, Briefcase } from "lucide-react"
 import { getPersonalInfo, getAboutInfo } from "@/lib/data"
+import ParticlesBackground from "@/components/particles-background"
 
 export function EnhancedProfile() {
   const [activeTab, setActiveTab] = useState("about")
@@ -18,10 +19,22 @@ export function EnhancedProfile() {
   return (
     <Card className="bg-card border-border backdrop-blur-sm col-span-1 flex flex-col overflow-hidden">
       <CardContent className="p-0">
-        {/* Profile Header */}
-        <div className="bg-muted p-4 sm:p-6 flex flex-col items-center border-b border-border">
-          <div className="flex flex-col items-center w-full">
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-4 border-2 border-brand/30 ring-4 ring-muted">
+      {/* Profile Header */}
+      <div className="relative bg-gradient-to-b from-muted via-muted/90 to-muted px-6 py-4 sm:px-10 sm:py-6 border-b border-border overflow-hidden">
+        
+        {/* Particles only for header */}
+        <ParticlesBackground
+          height="100%"
+          zIndex={0}
+          countDesktop={120}
+          countTablet={90}
+          countMobile={60}
+          size={2.8}
+          colors={["#ff223e", "#ff5f1f", "#ff7300"]}
+        />
+  <div className="relative z-10 mx-auto flex flex-col items-center w-full max-w-xs sm:max-w-sm">
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-4 
+  border-2 border-brand/30 ring-4 ring-muted bg-muted">
               <Image
                 src={personalInfo.avatar || "/placeholder.svg"}
                 alt={personalInfo.name}
@@ -58,7 +71,8 @@ export function EnhancedProfile() {
           </div>
 
           <SocialLinks socialLinks={personalInfo.social} />
-        </div>
+</div> {/* content wrapper */}
+
 
         {/* Tabs */}
         <Tabs defaultValue="about" className="w-full" onValueChange={setActiveTab}>
