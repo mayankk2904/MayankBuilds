@@ -14,16 +14,18 @@ interface ParticlesBackgroundProps {
   countMobile?: number;
   zIndex?: number;
   height?: string;
+  opacity?: number;
 }
 
 const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
-  colors = ['#ff223e', '#5d1eb2', '#ff7300'],
-  size = 3,
-  countDesktop = 60,
-  countTablet = 50,
-  countMobile = 40,
-  zIndex = 0,
-  height = '100vh',
+  colors = ['#ff223e', '#ff5f1f', '#ff7300'],
+  size = 2.8,
+  countDesktop = 120,
+  countTablet = 90,
+  countMobile = 60,
+  zIndex = 1,
+  height = '100%',
+  opacity = 0.8,
 }) => {
   useLayoutEffect(() => {
     const script = document.createElement('script');
@@ -42,6 +44,10 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
           particles: {
             number: {
               value: getParticleCount(),
+              density: {
+                enable: true,
+                value_area: 800,
+              }
             },
             color: {
               value: colors,
@@ -50,33 +56,48 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
               type: 'circle',
             },
             opacity: {
-              value: 1,
-              random: false,
+              value: opacity,
+              random: true,
+              anim: {
+                enable: true,
+                speed: 1,
+                opacity_min: 0.3,
+                sync: false,
+              },
             },
             size: {
               value: size,
               random: true,
+              anim: {
+                enable: true,
+                speed: 2,
+                size_min: 1,
+                sync: false,
+              },
             },
             line_linked: {
               enable: false,
             },
             move: {
-            enable: true,
-            speed: 2.8,
-            direction: 'none',
-            random: true,
-            straight: false,
-            out_mode: 'out',
+              enable: true,
+              speed: 2.8,
+              direction: 'none',
+              random: true,
+              straight: false,
+              out_mode: 'out',
+              bounce: false,
             },
           },
           interactivity: {
             detect_on: 'canvas',
             events: {
               onhover: {
-                enable: false,
+                enable: true,
+                mode: 'repulse',
               },
               onclick: {
-                enable: false,
+                enable: true,
+                mode: 'push',
               },
               resize: true,
             },
@@ -90,7 +111,7 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
     return () => {
       document.body.removeChild(script);
     };
-  }, [colors, size, countDesktop, countTablet, countMobile]);
+  }, [colors, size, countDesktop, countTablet, countMobile, opacity]);
 
   return (
     <div
@@ -118,20 +139,9 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
 
         .particles-js-canvas-el circle {
           fill: currentColor;
-          filter: url(#glow);
+          filter: drop-shadow(0 0 6px currentColor);
         }
       `}</style>
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-      </svg>
     </div>
   );
 };
