@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { User, MapPin, Mail, Languages, Clock, Briefcase } from "lucide-react"
 import { getPersonalInfo, getAboutInfo } from "@/lib/data"
 import ParticlesBackground from "@/components/particles-background"
+import { LanguageCard } from "./LanguageCard"
 
 export function EnhancedProfile() {
   const [activeTab, setActiveTab] = useState("about")
@@ -140,25 +141,7 @@ export function EnhancedProfile() {
                 Languages
               </h3>
 
-              <div className="space-y-3">
-                {aboutInfo.languages.map((language, index) => (
-                  <div key={index} className="space-y-1">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-foreground">{language.name}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {language.proficiency}
-                      </span>
-                    </div>
-
-                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-brand to-orange-500 rounded-full"
-                        style={{ width: `${language.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <LanguageCard languages={aboutInfo.languages} />
             </div>
           </TabsContent>
 
