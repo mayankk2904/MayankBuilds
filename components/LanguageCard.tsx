@@ -75,7 +75,7 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
           <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
             Language
           </div>
-          <div className="text-lg font-semibold">
+          <div className="text-sm font-semibold">
             {languages[active].name}
           </div>
         </div>
