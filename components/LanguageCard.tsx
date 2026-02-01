@@ -4,6 +4,14 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { GBFlag, INFlag, DEFlag } from "./flags"
+
+const LANGUAGE_FLAGS: Record<string, JSX.Element> = {
+  English: <GBFlag />,
+  Hindi: <INFlag />,
+  Marathi: <INFlag />,
+  German: <DEFlag />,
+}
 
 interface Language {
   name: string
@@ -19,7 +27,7 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
   const prev = () => setActive((i) => (i - 1 + languages.length) % languages.length)
 
   const getProgressLabel = (name: string) => {
-    if (name === "English") return "Fluent"
+    if (name === "English" || name === "German") return "Fluent"
     if (name === "Hindi" || name === "Marathi") return "Native"
     return "Native"
   }
@@ -70,15 +78,19 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="space-y-4"
         >
-        {/* Language Name */}
-        <div className="text-center">
-          <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
-            Language
-          </div>
-          <div className="text-sm font-semibold">
-            {languages[active].name}
-          </div>
-        </div>
+{/* Language Name */}
+<div className="text-center space-y-1">
+  <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+    Language
+  </div>
+
+  <div className="flex items-center justify-center gap-2">
+    {LANGUAGE_FLAGS[languages[active].name]}
+    <span className="text-sm font-semibold">
+      {languages[active].name}
+    </span>
+  </div>
+</div>
 
         {/* Proficiency */}
         <div className="text-center">
