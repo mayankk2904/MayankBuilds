@@ -271,7 +271,7 @@ export default function Home() {
 
             {/* Right: Copyright */}
             <div className="text-center sm:text-right">
-              © {new Date().getFullYear()} Made with ❤️
+              © {new Date().getFullYear()} All rights reserved.
             </div>
           </div>
         </AnimatedSection>

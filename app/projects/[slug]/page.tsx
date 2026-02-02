@@ -9,6 +9,30 @@ import { notFound } from "next/navigation"
 import { EnhancedScrollIndicator } from "@/components/enhanced-scroll-indicator"
 import { AnimatedSection } from "@/components/animated-section"
 import { PortfolioHeader } from "@/components/portfolio-header"
+import { SocialLinks } from "@/components/social-links"
+
+const socialLinks = [
+  {
+    platform: "GitHub",
+    url: "https://github.com/mayankk2904",
+    icon: "Github",
+  },
+  {
+    platform: "LinkedIn",
+    url: "https://www.linkedin.com/in/itsmayankk29/",
+    icon: "Linkedin",
+  },
+  {
+    platform: "Pinterest",
+    url: "https://in.pinterest.com/mayankk_draws/",
+    icon: "Pin",
+  },
+    {
+    platform: "Instagram",
+    url: "https://www.instagram.com/mayank_d_kulkarni/",
+    icon: "Instagram",
+  },
+]
 
 interface ProjectPageProps {
   params: {
@@ -238,9 +262,40 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         <AnimatedSection
           animation="fade-in"
           delay={500}
-          className="mt-4 sm:mt-6 py-3 sm:py-4 text-center text-xs sm:text-sm text-muted-foreground"
+          className="mt-6 sm:mt-8 border-t border-border"
         >
-          <p>© {new Date().getFullYear()} Made with Dedication by Mayank Kulkarni</p>
+          <div
+            className="
+              flex flex-col gap-4
+              sm:flex-row sm:items-center sm:justify-between
+              py-3 sm:py-4
+              text-xs sm:text-sm text-zinc-500
+            "
+          >
+            {/* Left: Social Icons */}
+            <div className="flex justify-center sm:justify-start">
+              <SocialLinks socialLinks={socialLinks} />
+            </div>
+
+            {/* Center: Logo + Name */}
+            <div className="flex items-center justify-center gap-2">
+              <Image
+                src="/logos/logo2.png" // ← replace if your logo path is different
+                alt="Logo"
+                width={22}
+                height={22}
+                className="opacity-90"
+              />
+              <span className="font-bold text-foreground">
+                Mayank<span className="text-brand font-bold">Builds</span>
+              </span>
+            </div>
+
+            {/* Right: Copyright */}
+            <div className="text-center sm:text-right">
+              © {new Date().getFullYear()} All rights reserved.
+            </div>
+          </div>
         </AnimatedSection>
       </div>
 
