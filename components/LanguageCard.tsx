@@ -33,10 +33,10 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
   }
 
   return (
-    <div className="relative w-full max-w-sm mx-auto rounded-3xl border border-border bg-card p-6">
+    <div className="relative w-full max-w-sm mx-auto rounded-3xl border border-border bg-card p-4">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <button
           onClick={prev}
           className="p-2 rounded-full hover:bg-muted transition active:scale-[0.95]"
@@ -76,21 +76,21 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -30 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="space-y-4"
+          className="space-y-3"
         >
-{/* Language Name */}
-<div className="text-center space-y-1">
-  <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
-    Language
-  </div>
+        {/* Language Name */}
+        <div className="text-center space-y-1">
+          <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+            Language
+          </div>
 
-  <div className="flex items-center justify-center gap-2">
-    {LANGUAGE_FLAGS[languages[active].name]}
-    <span className="text-sm font-semibold">
-      {languages[active].name}
-    </span>
-  </div>
-</div>
+          <div className="flex items-center justify-center gap-2">
+            {LANGUAGE_FLAGS[languages[active].name]}
+            <span className="text-sm font-semibold">
+              {languages[active].name}
+            </span>
+          </div>
+        </div>
 
         {/* Proficiency */}
         <div className="text-center">
