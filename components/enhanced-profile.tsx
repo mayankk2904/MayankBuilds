@@ -10,6 +10,7 @@ import { User, MapPin, Mail, Languages, Clock, Briefcase } from "lucide-react"
 import { getPersonalInfo, getAboutInfo } from "@/lib/data"
 import ParticlesBackground from "@/components/particles-background"
 import { LanguageCard } from "./LanguageCard"
+import TrueFocus from "@/components/TrueFocus"
 
 export function EnhancedProfile() {
   const [activeTab, setActiveTab] = useState("about")
@@ -74,8 +75,17 @@ export function EnhancedProfile() {
             ))}
           </div>
 
-          <div className="relative z-10">
-            <SocialLinks socialLinks={personalInfo.social} />
+          <div className="relative z-10 mt-7 mb-5 sm:mt-5 sm:mb-6 flex justify-center">
+            <TrueFocus
+              sentence="Building AI | for Good."
+              separator="|"
+              manualMode={false}
+              blurAmount={4}
+              borderColor="#ff5f1f"
+              glowColor="rgba(82, 39, 255, 0.6)"
+              animationDuration={0.5}
+              pauseBetweenAnimations={1}
+            />
           </div>
         </div>
 
