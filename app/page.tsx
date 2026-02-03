@@ -13,6 +13,7 @@ import { PortfolioHeader } from "@/components/portfolio-header"
 import { getExperienceInfo, getTechnicalSkillsInfo } from "@/lib/data"
 import Image from "next/image"
 import { SocialLinks } from "@/components/social-links"
+import OrbitingDomains from "@/components/OrbitingDomains"
 
 const socialLinks = [
   {
@@ -152,57 +153,7 @@ export default function Home() {
                     <FileCode className="w-5 h-5 mr-2 text-brand" />
                     <h3 className="text-lg font-medium">Technical Skills</h3>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    <AnimatedSection animation="slide-right" delay={100}>
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">AI and Data Science</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {technicalSkills.aiml.map((skill, index) => (
-                            <SkillTagComponent key={index} skill={skill} />
-                          ))}
-                        </div>
-                      </div>
-                    </AnimatedSection>
-
-                    <AnimatedSection animation="slide-left" delay={200}>
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Development</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {technicalSkills.development.map((skill, index) => (
-                            <SkillTagComponent key={index} skill={skill} />
-                          ))}
-                        </div>
-                      </div>
-                    </AnimatedSection>
-
-                    <AnimatedSection animation="slide-right" delay={100}>
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Backend and Databases</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {technicalSkills.backdb.map((skill, index) => (
-                            <SkillTagComponent key={index} skill={skill} />
-                          ))}
-                        </div>
-                      </div>
-                    </AnimatedSection>
-
-                    <AnimatedSection animation="slide-left" delay={400}>
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-zinc-800 dark:text-zinc-400">Soft Skills</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {technicalSkills.softSkills.map((skill, index) => (
-                            <div
-                              key={index}
-                              className="px-3 py-1.5 rounded-full bg-muted text-xs font-medium text-muted-foreground"
-                            >
-                              {skill}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </AnimatedSection>
-                  </div>
+                  <OrbitingDomains technicalSkills={technicalSkills} />
                 </CardContent>
               </Card>
             </AnimatedSection>
