@@ -11,7 +11,7 @@ export function CredentialsSection() {
     <Card className="bg-card border-border backdrop-blur-sm">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center mb-4 sm:mb-6">
-          <Ribbon className="w-5 h-5 mr-2 text-brand" />
+          <Ribbon className="w-5 h-5 mr-2" style={{ color: "hsl(var(--accent))" }} />
           <h3 className="text-lg font-medium">Credentials</h3>
         </div>
 
@@ -20,7 +20,7 @@ export function CredentialsSection() {
           <AnimatedSection animation="fade-up" delay={100}>
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-muted-foreground flex items-center border-b border-border pb-2">
-                <ShieldCheck className="w-4 h-4 mr-2 text-brand" />
+                <ShieldCheck className="w-4 h-4 mr-2" style={{ color: "hsl(var(--accent))" }} />
                 Professional Certifications
               </h4>
 
@@ -56,7 +56,7 @@ export function CredentialsSection() {
           <AnimatedSection animation="fade-up" delay={200}>
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-muted-foreground flex items-center border-b border-border pb-2">
-                <GraduationCap className="w-4 h-4 mr-2 text-brand" />
+                <GraduationCap className="w-4 h-4 mr-2" style={{ color: "hsl(var(--accent))" }} />
                 Education
               </h4>
 
@@ -92,7 +92,7 @@ export function CredentialsSection() {
           <AnimatedSection animation="fade-up" delay={300}>
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-muted-foreground flex items-center border-b border-border pb-2">
-                <Trophy className="w-4 h-4 mr-2 text-brand" />
+                <Trophy className="w-4 h-4 mr-2" style={{ color: "hsl(var(--accent))" }} />
                 Awards & Honors
               </h4>
 
@@ -103,7 +103,7 @@ export function CredentialsSection() {
                     className="flex items-start bg-muted/60 p-3 rounded-lg"
                   >
                     <div className="w-10 h-10 mr-3 rounded-md bg-background border border-border flex-shrink-0 grid place-items-center">
-                      <Trophy className="w-5 h-5 text-brand" />
+                      <Trophy className="w-5 h-5" style={{ color: "hsl(var(--accent))" }} />
                     </div>
 
                     <div>

@@ -134,8 +134,9 @@ const OrbitRing = ({ radius }: { radius: number }) => (
     style={{
       width: radius * 2,
       height: radius * 2,
-      border: "1px solid rgba(255,95,31,0.35)",
-      boxShadow: "0 0 40px rgba(255,95,31,0.25)",
+      // use --accent variable for border & glow so it follows selected color theme
+      border: "1px solid hsl(var(--accent) / 0.35)",
+      boxShadow: "0 0 40px hsl(var(--accent) / 0.25)",
     }}
   />
 )
@@ -186,15 +187,12 @@ const OrbitCanvas = ({
 }
 
 // Separate inner content to allow useContainerScale to be used with the same ref
-const InnerOrbitContent = ({
-  refContainer,
-  orbitGroups,
-  time,
-}: {
+const InnerOrbitContent = (props: {
   refContainer: React.RefObject<HTMLDivElement>
   orbitGroups: { skills: Skill[]; radius: number; speed: number }[]
   time: number
 }) => {
+  const { refContainer, orbitGroups, time } = props
   const scale = useContainerScale(refContainer)
   const dotSize = 46 * scale
   const centerSize = 72 * scale
@@ -305,66 +303,82 @@ export default function OrbitingDomains({
   const carousel = useCarousel(domains.length)
   const isDesktop = useIsDesktop()
 
-  const prepared = useMemo(() =>
-    domains.map((d) => {
-      if (d.key === "AI & Data") {
-        const groups = splitIntoThreeOrbits(d.items)
+  const prepared = useMemo(
+    () =>
+      domains.map((d) => {
+        if (d.key === "AI & Data") {
+          const groups = splitIntoThreeOrbits(d.items)
+          return {
+            ...d,
+            orbitGroups: groups.map((g, i) => ({ skills: g, radius: [80, 130, 180][i], speed: [0.9, -0.6, 0.5][i] })),
+          }
+        }
+        const groups = splitIntoTwoOrbits(d.items)
         return {
           ...d,
-          orbitGroups: groups.map((g, i) => ({ skills: g, radius: [80, 130, 180][i], speed: [0.9, -0.6, 0.5][i] })),
+          orbitGroups: groups.map((g, i) => ({ skills: g, radius: i === 0 ? 100 : 160, speed: i === 0 ? 0.9 : -0.6 })),
         }
-      }
-      const groups = splitIntoTwoOrbits(d.items)
-      return {
-        ...d,
-        orbitGroups: groups.map((g, i) => ({ skills: g, radius: i === 0 ? 100 : 160, speed: i === 0 ? 0.9 : -0.6 })),
-      }
-    })
-  , [domains])
+      }),
+    [domains]
+  )
 
   // small domain descriptions (can be customized)
-
-const descriptions = useMemo(() => ({
-  "AI & Data Science": `• Built and trained ML/DL models for real-world sponsored projects
+  const descriptions = useMemo(
+    () => ({
+      "AI & Data Science": `• Built and trained ML/DL models for real-world sponsored projects
 • Won several hackathons like TensorFiesta and TE AI Cup 2025
 • Deployed and optimized models for production level workflows`,
 
-  "Web Development": `• Developed responsive, accessible UIs with React & modern CSS
+      "Web Development": `• Developed responsive, accessible UIs with React & modern CSS
 • Built several web applications as web development secretary of CSI VIT Pune
 • Developed a full stack Bus Transit System for DSS World Pvt. Ltd. in collaboration with ISA, VIT Pune`,
 
-  "Backend & Databases": `• Worked on backend and database in TE AI Cup 2025
+      "Backend & Databases": `• Worked on backend and database in TE AI Cup 2025
 • Worked with PostgreSQL, MongoDB, and Supabase for various projects
 • Focused on performance, security, and scalability`,
 
-  "Soft Skills": `• Clear communication in cross-functional teams across hackathons and projects
+      "Soft Skills": `• Clear communication in cross-functional teams across hackathons and projects
 • Had a problem-solving and ownership mindset
 • Developed mentoring and leadership through my experience as an ASV at Make A Difference (MAD) NGO`,
-}), [])
+    }),
+    []
+  )
   return (
     <div className="w-full grid grid-cols-1 gap-4">
-      
-
       {/* header with small desc + controls */}
       <div className="flex items-center justify-between gap-2">
         <div>
           <div className="text-sm font-semibold">{domains[carousel.active].label}</div>
-          <div className="text-xs text-muted-foreground">{domains[carousel.active].short}</div>
+          <div className="text-xs text-muted-foreground">{(domains as any)[carousel.active].short}</div>
         </div>
 
         <div className="flex items-center gap-2">
-          <button aria-label="previous" onClick={carousel.prev} className="p-2 rounded-full bg-muted hover:bg-accent transition">‹</button>
+          <button
+            aria-label="previous"
+            onClick={carousel.prev}
+            className="p-2 rounded-full bg-muted hover:bg-accent transition-colors"
+          >
+            ‹
+          </button>
           <div className="flex items-center gap-1">
             {domains.map((_, idx) => (
               <button
                 key={`dot-${idx}`}
                 onClick={() => carousel.setActive(idx)}
-                className={`w-2 h-2 rounded-full ${carousel.active === idx ? "bg-accent" : "bg-muted"}`}
+                className={`w-2 h-2 rounded-full transition-colors duration-150 ${carousel.active === idx ? "" : "bg-muted"}`}
                 aria-label={`go to ${idx}`}
+                // active dot uses accent variable
+                style={carousel.active === idx ? { background: "hsl(var(--accent))" } : undefined}
               />
             ))}
           </div>
-          <button aria-label="next" onClick={carousel.next} className="p-2 rounded-full bg-muted hover:bg-accent transition">›</button>
+          <button
+            aria-label="next"
+            onClick={carousel.next}
+            className="p-2 rounded-full bg-muted hover:bg-accent transition-colors"
+          >
+            ›
+          </button>
         </div>
       </div>
 
@@ -375,12 +389,10 @@ const descriptions = useMemo(() => ({
         </div>
 
         <div className="bg-card border-border rounded-lg p-4 flex flex-col gap-4">
-<div>
-  <h4 className="text-sm font-semibold">Work done on {domains[carousel.active].label}</h4>
-  <div className="text-xs text-muted-foreground mt-2 whitespace-pre-line">
-    {descriptions[domains[carousel.active].label]}
-  </div>
-</div>
+          <div>
+            <h4 className="text-sm font-semibold">Work done on {domains[carousel.active].label}</h4>
+            <div className="text-xs text-muted-foreground mt-2 whitespace-pre-line">{(descriptions as any)[domains[carousel.active].label]}</div>
+          </div>
 
           <div>
             <h5 className="text-sm font-medium">Skills</h5>

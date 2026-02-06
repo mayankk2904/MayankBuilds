@@ -21,7 +21,7 @@ export default function AIChat() {
     if (!q.trim() || loading) return
 
     const userMessage: Message = { role: "user", content: q }
-    setMessages(prev => [...prev, userMessage])
+    setMessages((prev) => [...prev, userMessage])
     setQ("")
     setLoading(true)
 
@@ -33,9 +33,9 @@ export default function AIChat() {
       })
 
       const data = await res.json()
-      setMessages(prev => [...prev, { role: "assistant", content: data.answer }])
+      setMessages((prev) => [...prev, { role: "assistant", content: data.answer }])
     } catch {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "Sorry, something went wrong. Please try again." },
       ])
@@ -49,20 +49,26 @@ export default function AIChat() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-sm">
         {messages.length === 0 && (
-          <p className="text-muted-foreground text-xs">
-            Ask about my projects, skills, experience…
-          </p>
+          <p className="text-muted-foreground text-xs">Ask about my projects, skills, experience…</p>
         )}
 
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`max-w-[85%] rounded-lg px-3 py-2 break-words
-              ${
-                m.role === "user"
-                  ? "ml-auto bg-orange-500 text-black"
-                  : "mr-auto bg-muted text-foreground"
-              }`}
+            className={`max-w-[85%] rounded-lg px-3 py-2 break-words`}
+            style={
+              m.role === "user"
+                ? {
+                    marginLeft: "auto",
+                    background: "hsl(var(--accent))",
+                    color: "hsl(var(--accent-foreground))",
+                  }
+                : {
+                    marginRight: "auto",
+                    background: undefined,
+                    // keep assistant bubble using existing muted/card defaults via classes
+                  }
+            }
           >
             {m.content}
           </div>
@@ -91,19 +97,20 @@ export default function AIChat() {
           "
           placeholder="Type your question…"
           value={q}
-          onChange={e => setQ(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && ask()}
+          onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && ask()}
         />
 
         <button
           onClick={ask}
           disabled={loading}
-          className="
-            mt-2 w-full bg-orange-500 hover:bg-orange-600
-            text-sm py-2 rounded-md transition disabled:opacity-60
-          "
+          className="mt-2 w-full text-sm py-2 rounded-md transition disabled:opacity-60"
+          style={{
+            background: "hsl(var(--accent))",
+            color: "hsl(var(--accent-foreground))",
+          }}
         >
-          Ask
+          {loading ? "Asking…" : "Ask"}
         </button>
       </div>
     </div>

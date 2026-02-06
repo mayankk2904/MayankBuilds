@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
@@ -21,8 +23,17 @@ export function ProjectCard({
         className="
           overflow-hidden h-full group transition-all
           bg-card border-border
-          hover:border-orange-500/50
+          hover:opacity-95
         "
+        style={{
+          borderColor: "hsl(var(--border))",
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.borderColor = "hsl(var(--accent) / 0.6)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.borderColor = "hsl(var(--border))")
+        }
       >
         <div className="relative h-40 sm:h-48 w-full overflow-hidden">
           {/* Image */}
@@ -33,7 +44,7 @@ export function ProjectCard({
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
-          {/* Overlay (strong enough for light + dark mode) */}
+          {/* Overlay */}
           <div
             className="
               absolute inset-0
@@ -44,7 +55,10 @@ export function ProjectCard({
 
           {/* Text Content */}
           <div className="absolute bottom-0 left-0 p-3 sm:p-4">
-            <div className="text-xs text-brand mb-1">
+            <div
+              className="text-xs mb-1"
+              style={{ color: "hsl(var(--accent))" }}
+            >
               {category}
             </div>
 

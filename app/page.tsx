@@ -31,7 +31,7 @@ const socialLinks = [
     url: "https://in.pinterest.com/mayankk_draws/",
     icon: "Pin",
   },
-    {
+  {
     platform: "Instagram",
     url: "https://www.instagram.com/mayank_d_kulkarni/",
     icon: "Instagram",
@@ -45,16 +45,15 @@ type Skill = {
 
 const SkillTagComponent = ({ skill }: { skill: Skill }) => {
   return (
-<div
-  className="
-    group relative flex items-center gap-2
-    px-3 py-1.5 rounded-full
-    bg-muted text-xs font-medium text-muted-foreground
-    transition-all duration-200
-    hover:bg-accent
-  "
->
-
+    <div
+      className="
+        group relative flex items-center gap-2
+        px-3 py-1.5 rounded-full
+        bg-muted text-xs font-medium text-muted-foreground
+        transition-all duration-200
+        hover:bg-accent
+      "
+    >
       {/* Logo (hidden by default) */}
       <span
         className="
@@ -64,12 +63,7 @@ const SkillTagComponent = ({ skill }: { skill: Skill }) => {
           transition-all duration-200
         "
       >
-        <Image
-          src={skill.logo}
-          alt={skill.name}
-          width={14}
-          height={14}
-        />
+        <Image src={skill.logo} alt={skill.name} width={14} height={14} />
       </span>
 
       {/* Text */}
@@ -80,7 +74,6 @@ const SkillTagComponent = ({ skill }: { skill: Skill }) => {
   )
 }
 
-
 export default function Home() {
   const projects = getAllProjects()
   const experienceInfo = getExperienceInfo()
@@ -88,15 +81,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-
       {/* Background Grid Pattern */}
-      <div className="
-  fixed inset-0 z-0
-  bg-[radial-gradient(hsl(var(--border))_1px,transparent_1px)]
-  [background-size:20px_20px]
-  opacity-30
-"></div>
-
+      <div
+        className="
+          fixed inset-0 z-0
+          bg-[radial-gradient(hsl(var(--border))_1px,transparent_1px)]
+          [background-size:20px_20px]
+          opacity-30
+        "
+      ></div>
 
       {/* Header */}
       <PortfolioHeader />
@@ -117,14 +110,21 @@ export default function Home() {
               <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center mb-4 sm:mb-6">
-                    <BriefcaseBusiness className="w-5 h-5 mr-2 text-brand" />
+                    <BriefcaseBusiness
+                      className="w-5 h-5 mr-2"
+                      style={{ color: "hsl(var(--accent))" }}
+                    />
                     <h3 className="text-lg font-medium">Experience</h3>
                   </div>
 
                   <div className="space-y-6 sm:space-y-8">
                     {experienceInfo.map((experience, index) => (
-                      <AnimatedSection key={index} animation="fade-up" delay={100 * (index + 1)}>
-                        <ExperienceCard 
+                      <AnimatedSection
+                        key={index}
+                        animation="fade-up"
+                        delay={100 * (index + 1)}
+                      >
+                        <ExperienceCard
                           title={experience.title}
                           company={experience.company}
                           period={experience.period}
@@ -150,7 +150,10 @@ export default function Home() {
               <Card className="bg-card border-border backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center mb-4">
-                    <FileCode className="w-5 h-5 mr-2 text-brand" />
+                    <FileCode
+                      className="w-5 h-5 mr-2"
+                      style={{ color: "hsl(var(--accent))" }}
+                    />
                     <h3 className="text-lg font-medium">Technical Skills</h3>
                   </div>
                   <OrbitingDomains technicalSkills={technicalSkills} />
@@ -164,14 +167,21 @@ export default function Home() {
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
                     <div className="flex items-center">
-                      <FolderOpen className="w-5 h-5 mr-2 text-brand" />
+                      <FolderOpen
+                        className="w-5 h-5 mr-2"
+                        style={{ color: "hsl(var(--accent))" }}
+                      />
                       <h3 className="text-lg font-medium">Recent Projects</h3>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {projects.map((project, index) => (
-                      <AnimatedSection key={project.id} animation="zoom-in" delay={100 * (index + 1)}>
+                      <AnimatedSection
+                        key={project.id}
+                        animation="zoom-in"
+                        delay={100 * (index + 1)}
+                      >
                         <ProjectCard
                           title={project.title}
                           category={project.category}
@@ -216,7 +226,13 @@ export default function Home() {
                 className="opacity-90"
               />
               <span className="font-bold text-foreground">
-                Mayank<span className="text-brand font-bold">Builds</span>
+                Mayank
+                <span
+                  className="font-bold"
+                  style={{ color: "hsl(var(--accent))" }}
+                >
+                  Builds
+                </span>
               </span>
             </div>
 

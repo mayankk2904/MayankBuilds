@@ -90,3 +90,58 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* =========================
+   Color theme variants
+   (keeps your brand #FF5F1F intact;
+    changes --accent & a few complementary vars)
+   ========================= */
+
+:root {
+  /* ensure default accent exists (already present but safe-guard) */
+  --accent: 0 0% 96.1%;
+}
+
+/* Neon lime (complementary high-energy accent) */
+.color-lime {
+  /* neon lime-ish */
+  --accent: 85 100% 48%;
+  --sidebar-accent: 85 100% 20%;
+  --chart-4: 85 85% 48%;
+  --chart-5: 95 95% 65%;
+  /* optional subtle highlight for buttons, borders */
+  --ring: 85 90% 45%;
+}
+
+/* Bright purple (vibrant modern purple that pairs with orange) */
+.color-purple {
+  --accent: 270 90% 55%;
+  --sidebar-accent: 270 85% 18%;
+  --chart-4: 270 75% 51%;
+  --chart-5: 300 75% 58%;
+  --ring: 270 80% 50%;
+}
+
+/* Gold (warm metallic accent that complements orange brand) */
+.color-gold {
+  --accent: 42 85% 48%;
+  --sidebar-accent: 42 65% 18%;
+  --chart-4: 42 70% 48%;
+  --chart-5: 30 70% 55%;
+  --ring: 42 60% 45%;
+}
+
+/* Optional glow / neon utility using --accent */
+.glow-accent {
+  box-shadow: 0 8px 30px color-mix(in srgb, hsl(var(--accent)) 35%, transparent);
+  /* fallback: subtle outline */
+  outline: 1px solid hsl(var(--accent));
+}
+/* small text glow */
+.text-glow {
+  text-shadow: 0 6px 18px color-mix(in srgb, hsl(var(--accent)) 40%, rgba(0,0,0,0));
+}
+
+/* Accessibility note: if users choose a color that reduces contrast,
+   verify text/background contrast for critical UI. */
+

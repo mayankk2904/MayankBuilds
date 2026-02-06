@@ -34,7 +34,6 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
 
   return (
     <div className="relative w-full max-w-sm mx-auto rounded-3xl border border-border bg-card p-4">
-
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <button
@@ -53,9 +52,11 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
               className={cn(
                 "rounded-full transition-all duration-300",
                 i === active
-                  ? "w-5 h-2 bg-brand"
+                  ? "w-5 h-2" // keep sizing via tailwind, color via inline style
                   : "w-2 h-2 bg-muted-foreground/40 hover:bg-muted-foreground/60"
               )}
+              // active dot uses accent variable
+              style={i === active ? { background: "hsl(var(--accent))" } : undefined}
             />
           ))}
         </div>
@@ -78,29 +79,25 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="space-y-3"
         >
-        {/* Language Name */}
-        <div className="text-center space-y-1">
-          <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
-            Language
+          {/* Language Name */}
+          <div className="text-center space-y-1">
+            <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+              Language
+            </div>
+
+            <div className="flex items-center justify-center gap-2">
+              {LANGUAGE_FLAGS[languages[active].name]}
+              <span className="text-sm font-semibold">{languages[active].name}</span>
+            </div>
           </div>
 
-          <div className="flex items-center justify-center gap-2">
-            {LANGUAGE_FLAGS[languages[active].name]}
-            <span className="text-sm font-semibold">
-              {languages[active].name}
-            </span>
+          {/* Proficiency */}
+          <div className="text-center">
+            <div className="text-sm font-medium">{languages[active].proficiency}</div>
+            <div className="text-[11px] text-muted-foreground">
+              Skill Level · {languages[active].level}%
+            </div>
           </div>
-        </div>
-
-        {/* Proficiency */}
-        <div className="text-center">
-          <div className="text-sm font-medium">
-            {languages[active].proficiency}
-          </div>
-          <div className="text-[11px] text-muted-foreground">
-            Skill Level · {languages[active].level}%
-          </div>
-        </div>
 
           {/* Progress */}
           <div className="space-y-2">
@@ -114,7 +111,13 @@ export function LanguageCard({ languages }: { languages: Language[] }) {
                 initial={{ width: 0 }}
                 animate={{ width: `${languages[active].level}%` }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="h-full rounded-full bg-gradient-to-r from-brand to-orange-500 shadow-[0_0_12px_rgba(255,120,0,0.6)]"
+                className="h-full rounded-full"
+                // gradient & glow driven by --accent so they follow the selected theme
+                style={{
+                  background:
+                    "linear-gradient(90deg, hsl(var(--accent)), hsl(var(--accent) / 0.85))",
+                  boxShadow: "0 0 12px hsl(var(--accent) / 0.5)",
+                }}
               />
             </div>
 

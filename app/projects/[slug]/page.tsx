@@ -90,7 +90,11 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/40 to-transparent dark:from-black/90 dark:via-black/50" />
 
                 <div className="absolute bottom-0 left-0 p-4 sm:p-6">
-                  <div className="text-xs sm:text-sm text-brand mb-1 sm:mb-2">
+                  <div
+  className="text-xs sm:text-sm mb-1 sm:mb-2"
+  style={{ color: "hsl(var(--accent))" }}
+>
+
                     {project.category}
                   </div>
                   <h1 className="text-xl sm:text-3xl md:text-4xl font-bold">
@@ -144,11 +148,16 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                   <AnimatedSection animation="fade-up" delay={400}>
                     <div className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-8">
                       {project.liveUrl && (
-                        <Button
-                          asChild
-                          size="sm"
-                          className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-xs sm:text-sm"
-                        >
+<Button
+  asChild
+  size="sm"
+  style={{
+    background:
+      "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent) / 0.7))",
+  }}
+  className="text-xs sm:text-sm text-white hover:opacity-90"
+>
+
                           <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                             View Live Project
@@ -242,7 +251,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                                 />
                               </div>
                               <div>
-                                <h3 className="text-sm sm:text-base font-medium group-hover:text-brand transition-colors text-foreground">
+<h3
+  className="text-sm sm:text-base font-medium transition-colors text-foreground group-hover:opacity-90"
+  style={{ color: "hsl(var(--accent))" }}
+>
                                   {related.title}
                                 </h3>
                                 <p className="text-xs text-muted-foreground">{related.category}</p>
@@ -287,7 +299,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 className="opacity-90"
               />
               <span className="font-bold text-foreground">
-                Mayank<span className="text-brand font-bold">Builds</span>
+Mayank
+<span
+  className="font-bold"
+  style={{ color: "hsl(var(--accent))" }}
+>
+  Builds
+</span>
               </span>
             </div>
 

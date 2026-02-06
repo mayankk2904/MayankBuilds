@@ -51,7 +51,10 @@ export function ExperienceCard({
           <h4 className="font-medium text-base sm:text-lg leading-tight text-foreground">
             {title}
           </h4>
-          <div className="text-sm text-brand">
+          <div
+            className="text-sm"
+            style={{ color: "hsl(var(--accent))" }} // follows selected color theme
+          >
             {company}
           </div>
         </div>
@@ -82,7 +85,10 @@ export function ExperienceCard({
         <ul className="space-y-2">
           {achievements.map((item, i) => (
             <li key={i} className="flex text-sm text-foreground">
-              <CircleArrowRight className="w-4 h-4 mr-2 text-brand mt-0.5 flex-shrink-0" />
+              <CircleArrowRight
+                className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"
+                style={{ color: "hsl(var(--accent))" }} // follows selected color theme
+              />
               <span>{item}</span>
             </li>
           ))}

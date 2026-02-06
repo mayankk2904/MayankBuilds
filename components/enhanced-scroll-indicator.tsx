@@ -9,32 +9,29 @@ export function EnhancedScrollIndicator() {
 
   useEffect(() => {
     const updateScrollProgress = () => {
-      // Calculate scroll progress accurately
       const scrollTop = window.scrollY || document.documentElement.scrollTop
       const windowHeight = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
-      
-      // Calculate total scrollable height
+
       const totalScrollableHeight = docHeight - windowHeight
-      
-      // Calculate scroll percentage (clamped between 0 and 1)
+
       let scrollPercent = 0
       if (totalScrollableHeight > 0) {
-        scrollPercent = Math.min(Math.max(scrollTop / totalScrollableHeight, 0), 1)
+        scrollPercent = Math.min(
+          Math.max(scrollTop / totalScrollableHeight, 0),
+          1
+        )
       }
-      
+
       setScrollProgress(scrollPercent)
       setIsVisible(scrollTop > 100)
     }
 
-    // Add event listeners
     window.addEventListener("scroll", updateScrollProgress, { passive: true })
     window.addEventListener("resize", updateScrollProgress, { passive: true })
 
-    // Initial calculation
     updateScrollProgress()
 
-    // Clean up event listeners
     return () => {
       window.removeEventListener("scroll", updateScrollProgress)
       window.removeEventListener("resize", updateScrollProgress)
@@ -46,7 +43,7 @@ export function EnhancedScrollIndicator() {
   }
 
   const progressPercentage = Math.min(Math.round(scrollProgress * 100), 100)
-  const circumference = 2 * Math.PI * 9 // For r="9" (45% of 20px)
+  const circumference = 2 * Math.PI * 9
 
   return (
     <div
@@ -57,6 +54,7 @@ export function EnhancedScrollIndicator() {
       }`}
     >
       <div className="flex flex-col items-center">
+
         {/* Scroll Button */}
         <div
           className="
@@ -75,7 +73,8 @@ export function EnhancedScrollIndicator() {
         >
           {/* Progress Ring */}
           <svg className="absolute inset-0 -rotate-90 w-full h-full overflow-visible">
-            {/* Background circle */}
+
+            {/* Background ring */}
             <circle
               cx="50%"
               cy="50%"
@@ -83,16 +82,16 @@ export function EnhancedScrollIndicator() {
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
-              className="text-zinc-300 dark:text-zinc-700"
+              className="text-muted-foreground/30"
             />
 
-            {/* Orange Progress circle */}
+            {/* Accent Progress ring */}
             <circle
               cx="50%"
               cy="50%"
               r="9"
               fill="none"
-              stroke="#ff5f1f"
+              stroke="hsl(var(--accent))"
               strokeWidth="2"
               strokeDasharray={circumference}
               strokeDashoffset={circumference * (1 - scrollProgress)}
@@ -101,13 +100,20 @@ export function EnhancedScrollIndicator() {
             />
           </svg>
 
-          {/* Chevron Icon */}
+          {/* Chevron */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 text-[#ff5f1f] transition-transform group-hover:scale-110" />
+            <ChevronUp
+              className="
+                h-4 w-4 sm:h-5 sm:w-5
+                text-[hsl(var(--accent))]
+                transition-transform
+                group-hover:scale-110
+              "
+            />
           </div>
         </div>
 
-        {/* Percentage label */}
+        {/* Percentage */}
         <div
           className="
             mt-1 sm:mt-2
@@ -115,13 +121,14 @@ export function EnhancedScrollIndicator() {
             px-2 py-1 rounded-md
             bg-background/80 dark:bg-muted/80
             backdrop-blur-sm
-            text-[#ff5f1f]
+            text-[hsl(var(--accent))]
             border border-border
             transition-all duration-150 ease-out
           "
         >
           {progressPercentage}%
         </div>
+
       </div>
     </div>
   )
