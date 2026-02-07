@@ -15,59 +15,41 @@ const COLOR_OPTIONS = [
 export default function ColorThemeToggle() {
   const [active, setActive] = useState<string>("")
 
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    
-    // Check if theme is already applied to document
-    const doc = document.documentElement
-    let foundClass = ""
-    
-    // Check which color class is currently active
-    COLOR_CLASSES.forEach((c) => {
-      if (c && doc.classList.contains(c)) {
-        foundClass = c
-      }
-    })
-    
-    // If no class found, check localStorage or set to default
-    if (foundClass) {
-      setActive(foundClass)
-    } else {
-      // Check localStorage for saved preference
-      const saved = localStorage.getItem(COLOR_KEY)
-      if (saved !== null) {
-        apply(saved, false) // Apply saved theme without saving again
-      } else {
-        apply("", false) // Apply default without saving
-      }
-    }
-  }, [])
+useEffect(() => {
+  if (typeof window === "undefined") return
 
-  function apply(cls: string, saveToStorage = true) {
-    const doc = document.documentElement
+  const hasLoaded = sessionStorage.getItem("color-initialized")
 
-    // remove other color classes
-    COLOR_CLASSES.forEach((c) => {
-      if (c) doc.classList.remove(c)
-    })
-
-    // remove inline override so classes can work
-    doc.style.removeProperty("--accent")
-
-    if (cls) {
-      doc.classList.add(cls)
-    } else {
-      // restore DEFAULT ORANGE when reset
-      doc.style.setProperty("--accent", "18 100% 56%")
-    }
-
-    setActive(cls)
-    
-    // Save to localStorage if requested
-    if (saveToStorage) {
-      localStorage.setItem(COLOR_KEY, cls)
-    }
+  if (!hasLoaded) {
+    // First page load → reset to default
+    localStorage.removeItem(COLOR_KEY)
+    apply("", false)
+    sessionStorage.setItem("color-initialized", "true")
   }
+}, [])
+
+
+
+function apply(cls: string, saveToStorage = true) {
+  const doc = document.documentElement
+
+  // remove all color variants
+  COLOR_CLASSES.forEach((c) => {
+    if (c) doc.classList.remove(c)
+  })
+
+  // apply new color variant (if any)
+  if (cls) {
+    doc.classList.add(cls)
+  }
+
+  setActive(cls)
+
+  if (saveToStorage) {
+    localStorage.setItem(COLOR_KEY, cls)
+  }
+}
+
 
   return (
     <div className="flex flex-col gap-2">

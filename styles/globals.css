@@ -99,7 +99,8 @@
 
 :root {
   /* ensure default accent exists (already present but safe-guard) */
-  --accent: 0 0% 96.1%;
+  --accent: 18 100% 56%;
+
 }
 
 /* Neon lime (complementary high-energy accent) */
