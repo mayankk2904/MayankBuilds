@@ -10,6 +10,7 @@ import InitialLoader from "@/components/InitialLoader"
 import StyledComponentsRegistry from "@/app/registry"
 import { ThemeProvider } from "@/components/theme-provider"
 import { CopyProtection } from "@/components/copy-protection" 
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"] })
 
