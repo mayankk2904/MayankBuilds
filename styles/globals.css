@@ -141,6 +141,15 @@
 .text-glow {
   text-shadow: 0 6px 18px color-mix(in srgb, hsl(var(--accent)) 40%, rgba(0,0,0,0));
 }
+/* Electric Cyan (clean futuristic accent) */
+.color-cyan {
+  --accent: 190 95% 45%;
+  --sidebar-accent: 190 80% 18%;
+  --chart-4: 190 85% 45%;
+  --chart-5: 200 90% 60%;
+  --ring: 190 90% 45%;
+}
+
 
 /* Accessibility note: if users choose a color that reduces contrast,
    verify text/background contrast for critical UI. */

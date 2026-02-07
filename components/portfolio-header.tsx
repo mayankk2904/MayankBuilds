@@ -20,6 +20,77 @@ export function PortfolioHeader() {
   const navItems = getNavItems()
   const personalInfo = getPersonalInfo()
 
+  /* -------------------------
+     Logo / theme image logic
+     ------------------------- */
+
+  // Map your theme-class -> image filename.
+  // Update these paths to match the files you downloaded.
+  const LOGO_MAP = {
+    "color-lime": {
+      wheel: "/logos/wheel1-lime.png",
+      center: "/logos/center-lime.png",
+    },
+    "color-purple": {
+      wheel: "/logos/wheel1-purple.png",
+      center: "/logos/center-purple.png",
+    },
+    "color-gold": {
+      wheel: "/logos/wheel1-gold.png",
+      center: "/logos/center-gold.png",
+    },
+    "color-cyan": {
+      wheel: "/logos/wheel1-cyan.png",
+      center: "/logos/center-cyan.png",
+    },
+    // default (no extra class) - keep original orange variant
+    default: {
+      wheel: "/logos/wheel1.png",
+      center: "/logos/center.png",
+    },
+  } as const
+
+  // derive theme class name from document.documentElement
+const getActiveColorClass = () => {
+  if (typeof window === "undefined") return "default"
+  const el = document.documentElement
+  if (!el) return "default"
+
+  // Look for any of our known classes on <html>
+  const known = ["color-lime", "color-purple", "color-gold", "color-cyan"]
+  for (const k of known) {
+    if (el.classList.contains(k)) return k
+  }
+
+  return "default"
+}
+
+
+  const [logoTheme, setLogoTheme] = useState<keyof typeof LOGO_MAP>(
+    typeof window === "undefined" ? "default" : (getActiveColorClass() as any)
+  )
+
+  useEffect(() => {
+    // update on mount in case SSR -> CSR change
+    setLogoTheme(getActiveColorClass() as any)
+
+    // Observe html.class changes (so theme applied by adding/removing classes is captured)
+    const target = document.documentElement
+    const mo = new MutationObserver(() => {
+      setLogoTheme(getActiveColorClass() as any)
+    })
+    mo.observe(target, { attributes: true, attributeFilter: ["class"] })
+
+    // also listen to localStorage changes (cross-tab)
+return () => {
+  mo.disconnect()
+}
+
+  }, [])
+
+  /* -------------------------
+     Scroll / active section logic (unchanged)
+     ------------------------- */
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
@@ -69,89 +140,134 @@ export function PortfolioHeader() {
    * - Handles outside click to close
    * - Auto aligns left/right to avoid overflowing the viewport
    */
-  function ColorPickerButton({ ariaLabel = "Color theme" }: { ariaLabel?: string }) {
-    const [open, setOpen] = useState(false)
-    const containerRef = useRef<HTMLDivElement | null>(null)
-    const dropdownWidth = 260 // px; must match w-[220px] below
-    const [alignRight, setAlignRight] = useState(true)
+function ColorPickerButton({ ariaLabel = "Color theme" }: { ariaLabel?: string }) {
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const dropdownWidth = 220 // px expected dropdown width
+  const [alignRight, setAlignRight] = useState(true)
+  const [btnRect, setBtnRect] = useState<DOMRect | null>(null)
 
-    useEffect(() => {
-      if (!open) return
+  useEffect(() => {
+    if (!open) return
 
-      const handleOutside = (e: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-          setOpen(false)
-        }
+    const handleOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    const updatePosition = () => {
+      const btn = containerRef.current?.getBoundingClientRect()
+      if (!btn) return
+
+      // Save measured rect for fixed positioning on small screens
+      setBtnRect(btn)
+
+      // If small screen, we'll center the popover fixed in viewport.
+      const isSmall = window.innerWidth <= 640
+
+      if (isSmall) {
+        // center mode — we won't use alignRight in this case
+        setAlignRight(false)
+        return
       }
 
-      const updatePosition = () => {
-        const btn = containerRef.current?.getBoundingClientRect()
-        if (!btn) return
-        // If dropdown would overflow to the right, keep `right: 0`, otherwise left: 0
-        const wouldOverflowRight = btn.left + dropdownWidth > window.innerWidth - 12
-        setAlignRight(wouldOverflowRight)
-      }
+      // desktop/tablet behavior: decide whether to align right to avoid overflow
+      const wouldOverflowRight = btn.left + dropdownWidth > window.innerWidth - 12
+      setAlignRight(wouldOverflowRight)
+    }
 
-      updatePosition()
-      window.addEventListener("resize", updatePosition)
-      document.addEventListener("mousedown", handleOutside)
-      return () => {
-        window.removeEventListener("resize", updatePosition)
-        document.removeEventListener("mousedown", handleOutside)
-      }
-    }, [open])
+    updatePosition()
+    window.addEventListener("resize", updatePosition)
+    document.addEventListener("mousedown", handleOutside)
+    window.addEventListener("orientationchange", updatePosition)
 
-    return (
-      <div ref={containerRef} className="relative">
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors"
-          aria-label={ariaLabel}
-          aria-haspopup="true"
-          aria-expanded={open}
-        >
-          <Palette className="w-4 h-4" />
-        </button>
+    return () => {
+      window.removeEventListener("resize", updatePosition)
+      document.removeEventListener("mousedown", handleOutside)
+      window.removeEventListener("orientationchange", updatePosition)
+    }
+  }, [open])
 
-        {open && (
-<div
-  role="dialog"
-  aria-label="Color theme dropdown"
-  className="
-    absolute top-full mt-2
-    p-3 sm:p-4
-    bg-card border border-border rounded-lg shadow-lg
-    z-50 animate-fade-in
-    w-[90vw] max-w-[260px] sm:w-[220px]
-  "
-  style={{
-    right: alignRight ? 0 : "auto",
-    left: alignRight ? "auto" : 0,
+  // Build style for dropdown based on measured rect and viewport
+  const dropdownStyle: React.CSSProperties = {}
+  const isSmall = typeof window !== "undefined" && window.innerWidth <= 640
 
-    // Extra safety for tiny screens
-    transform:
-      !alignRight && window.innerWidth < 480
-        ? "translateX(-50%)"
-        : undefined,
-
-    borderColor: "hsl(var(--accent) / 0.15)",
-    boxShadow: "0 14px 30px -10px hsl(var(--accent) / 0.06)",
-  }}
->
-
-            <div className="text-xs font-medium text-muted-foreground pb-2 border-b border-border mb-2">
-              Color Theme
-            </div>
-            <div className="min-h-[48px] flex justify-center">
-
-              {/* Keep your ColorThemeToggle here — it's the same component you had before */}
-              <ColorThemeToggle />
-            </div>
-          </div>
-        )}
-      </div>
-    )
+  if (isSmall && btnRect) {
+    // fixed, centered under the button (so it won't be constrained by header layout)
+    const top = btnRect.bottom + window.scrollY + 8 // 8px gap
+    dropdownStyle.position = "fixed"
+    dropdownStyle.left = "50%"
+    dropdownStyle.top = `${top}px`
+    dropdownStyle.transform = "translateX(-50%)"
+    dropdownStyle.width = "min(92vw, 320px)"
+    dropdownStyle.right = "auto"
+  } else {
+    // absolute positioning anchored to the container (desktop/tablet)
+    if (alignRight) {
+      dropdownStyle.right = 0
+      dropdownStyle.left = "auto"
+    } else {
+      dropdownStyle.left = 0
+      dropdownStyle.right = "auto"
+    }
+    dropdownStyle.position = "absolute"
+    dropdownStyle.transform = undefined
+    dropdownStyle.width = undefined
   }
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors"
+        aria-label={ariaLabel}
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        <Palette className="w-4 h-4" />
+      </button>
+{open && (
+  <div
+    role="dialog"
+    aria-label="Color theme dropdown"
+    className={`
+      absolute top-full mt-2
+      p-3 sm:p-4
+      bg-card border border-border rounded-lg shadow-lg
+      z-50 animate-fade-in
+      w-[90vw] max-w-[260px] sm:w-[220px]
+    `}
+    style={{
+      // merge computed placement (fixed mode will override position)
+      ...dropdownStyle,
+      borderColor: "hsl(var(--accent) / 0.15)",
+      boxShadow: "0 10px 25px -5px hsl(var(--accent) / 0.08)",
+    }}
+  >
+
+          <div className="text-xs font-medium text-muted-foreground pb-2 mb-2 flex items-center justify-between">
+            <span>Theme Colors</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground"
+              aria-label="Close color picker"
+            >
+              ×
+            </button>
+          </div>
+          <div className="min-h-[48px]">
+            <ColorThemeToggle />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+  // select current logo images
+  const { wheel: wheelSrc, center: centerSrc } = LOGO_MAP[logoTheme] ?? LOGO_MAP.default
 
   return (
     <header
@@ -167,16 +283,13 @@ export function PortfolioHeader() {
         <Link href="/" className="flex items-center group">
           <div className="relative h-10 w-10 md:h-12 md:w-12">
             {/* 🔁 ROTATING WHEEL */}
-            <div
-              ref={logoRef}
-              className="absolute inset-0 will-change-transform transition-transform duration-75"
-            >
-              <Image src="/logos/wheel1.png" alt="MK Wheel" fill priority />
+            <div ref={logoRef} className="absolute inset-0 will-change-transform transition-transform duration-75">
+              <Image src={wheelSrc} alt="MK Wheel" fill priority />
             </div>
 
             {/* 🧷 FIXED CENTER LOGO */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <Image src="/logos/center.png" alt="MK Center" width={18} height={18} />
+              <Image src={centerSrc} alt="MK Center" width={18} height={18} />
             </div>
           </div>
         </Link>
