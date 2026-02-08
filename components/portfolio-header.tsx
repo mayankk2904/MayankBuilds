@@ -193,16 +193,14 @@ function ColorPickerButton({ ariaLabel = "Color theme" }: { ariaLabel?: string }
   const dropdownStyle: React.CSSProperties = {}
   const isSmall = typeof window !== "undefined" && window.innerWidth <= 640
 
-  if (isSmall && btnRect) {
-    // fixed, centered under the button (so it won't be constrained by header layout)
-    const top = btnRect.bottom + window.scrollY + 8 // 8px gap
-    dropdownStyle.position = "fixed"
-    dropdownStyle.left = "50%"
-    dropdownStyle.top = `${top}px`
-    dropdownStyle.transform = "translateX(-50%)"
-    dropdownStyle.width = "min(92vw, 320px)"
-    dropdownStyle.right = "auto"
-  } else {
+ if (isSmall && btnRect) {
+  dropdownStyle.position = "fixed"
+  dropdownStyle.left = "50%"
+  dropdownStyle.top = `${btnRect.bottom + 8}px`
+  dropdownStyle.transform = "translateX(-50%)"
+  dropdownStyle.width = "min(92vw, 320px)"
+}
+ else {
     // absolute positioning anchored to the container (desktop/tablet)
     if (alignRight) {
       dropdownStyle.right = 0
