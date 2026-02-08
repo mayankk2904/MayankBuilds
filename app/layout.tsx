@@ -42,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </InitialLoader>
           </StyledComponentsRegistry>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
