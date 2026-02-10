@@ -12,7 +12,7 @@ export function CredentialsSection() {
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center mb-4 sm:mb-6">
           <Ribbon className="w-5 h-5 mr-2" style={{ color: "hsl(var(--accent))" }} />
-          <h3 className="text-lg font-medium">Credentials</h3>
+          <h3 className="text-lg font-medium cursor-target">Credentials</h3>
         </div>
 
         <div className="space-y-6 sm:space-y-8">

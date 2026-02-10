@@ -310,7 +310,7 @@ function ColorPickerButton({ ariaLabel = "Color theme" }: { ariaLabel?: string }
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <span className="relative z-10">{item.label}</span>
+                  <span className="relative z-10 cursor-target">{item.label}</span>
                   <span
                     className="absolute inset-0 rounded-md transition-all duration-300"
                     style={{

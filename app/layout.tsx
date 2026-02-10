@@ -11,6 +11,7 @@ import StyledComponentsRegistry from "@/app/registry"
 import { ThemeProvider } from "@/components/theme-provider"
 import { CopyProtection } from "@/components/copy-protection" 
 import { Analytics } from "@vercel/analytics/next"
+import TargetCursor from "@/components/TargetCursor";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ScrollProgressIndicator />
                 {children}
                 <AIChatWidget />
+                <TargetCursor />
               </AnimationProvider>
             </InitialLoader>
           </StyledComponentsRegistry>

@@ -14,6 +14,7 @@ import { getExperienceInfo, getTechnicalSkillsInfo } from "@/lib/data"
 import Image from "next/image"
 import { SocialLinks } from "@/components/social-links"
 import OrbitingDomains from "@/components/OrbitingDomains"
+import TargetCursor from "@/components/TargetCursor"
 
 const socialLinks = [
   {
@@ -114,7 +115,7 @@ export default function Home() {
                       className="w-5 h-5 mr-2"
                       style={{ color: "hsl(var(--accent))" }}
                     />
-                    <h3 className="text-lg font-medium">Experience</h3>
+                    <h3 className="text-lg font-medium cursor-target">Experience</h3>
                   </div>
 
                   <div className="space-y-6 sm:space-y-8">
@@ -154,7 +155,7 @@ export default function Home() {
                       className="w-5 h-5 mr-2"
                       style={{ color: "hsl(var(--accent))" }}
                     />
-                    <h3 className="text-lg font-medium">Technical Skills</h3>
+                    <h3 className="text-lg font-medium cursor-target">Technical Skills</h3>
                   </div>
                   <OrbitingDomains technicalSkills={technicalSkills} />
                 </CardContent>
@@ -171,7 +172,7 @@ export default function Home() {
                         className="w-5 h-5 mr-2"
                         style={{ color: "hsl(var(--accent))" }}
                       />
-                      <h3 className="text-lg font-medium">Recent Projects</h3>
+                      <h3 className="text-lg font-medium cursor-target">Recent Projects</h3>
                     </div>
                   </div>
 
@@ -217,7 +218,7 @@ export default function Home() {
             </div>
 
             {/* Center: Logo + Name */}
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2 cursor-target">
               <Image
                 src="/logos/logo2.png" // ← replace if your logo path is different
                 alt="Logo"

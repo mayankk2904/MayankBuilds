@@ -97,7 +97,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
                     {project.category}
                   </div>
-                  <h1 className="text-xl sm:text-3xl md:text-4xl font-bold">
+                  <h1 className="text-xl sm:text-3xl md:text-4xl font-bold cursor-target">
                     {project.title}
                   </h1>
                   <p className="text-sm text-muted-foreground mt-1 sm:mt-2 max-w-2xl">
@@ -148,15 +148,15 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                   <AnimatedSection animation="fade-up" delay={400}>
                     <div className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-8">
                       {project.liveUrl && (
-<Button
-  asChild
-  size="sm"
-  style={{
-    background:
-      "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent) / 0.7))",
-  }}
-  className="text-xs sm:text-sm text-white hover:opacity-90"
->
+                      <Button
+                        asChild
+                        size="sm"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent) / 0.7))",
+                        }}
+                        className="text-xs sm:text-sm text-white hover:opacity-90"
+                      >
 
                           <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
@@ -290,7 +290,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             </div>
 
             {/* Center: Logo + Name */}
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2 cursor-target">
               <Image
                 src="/logos/logo2.png" // ← replace if your logo path is different
                 alt="Logo"

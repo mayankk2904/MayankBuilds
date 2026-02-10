@@ -38,7 +38,7 @@ export function EnhancedProfile() {
             </div>
 
             <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground cursor-target">
                 {personalInfo.name}
               </h2>
               <p
