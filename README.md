@@ -22,6 +22,7 @@ I enjoy working at the intersection of **AI + software engineering**, and I love
 - Multiple color themes (cyan, orange, gold, lime and purple)
 - Attractive animations and smooth transitions
 - Fully responsive and looks well on mobile, tablets and pcs
+- GSAP for smooth and interactive cursor animations
 
 ---
 
@@ -31,6 +32,7 @@ I enjoy working at the intersection of **AI + software engineering**, and I love
 - Next.js  
 - TypeScript  
 - Tailwind CSS   
+- GSAP
 
 ### ⚙️ Backend
 - Flask
