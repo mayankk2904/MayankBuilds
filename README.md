@@ -15,6 +15,16 @@ I enjoy working at the intersection of **AI + software engineering**, and I love
 
 ---
 
+## Features
+
+- Personal AI Chatbot to answer questions about my profile
+- Comes in both light and dark themes
+- Multiple color themes (cyan, orange, gold, lime and purple)
+- Attractive animations and smooth transitions
+- Fully responsive and looks well on mobile, tablets and pcs
+
+---
+
 ## 🛠️ Tech Stack
 
 ### 💻 Frontend
@@ -35,4 +45,4 @@ I enjoy working at the intersection of **AI + software engineering**, and I love
 - Hugging Face  
 - Vercel 
 
----
+--- 
