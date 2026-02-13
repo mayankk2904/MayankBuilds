@@ -8,6 +8,7 @@ import { ScrollProgressIndicator } from "@/components/scroll-progress-indicator"
 import AIChatWidget from "@/components/ai-chat-widget"
 import TargetCursor from "@/components/TargetCursor"
 import InitialLoader from "@/components/InitialLoader"
+import { CopyProtection } from "./copy-protection"
 
 export default function ClientProviders({
   children,
@@ -25,6 +26,8 @@ export default function ClientProviders({
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <StyledComponentsRegistry>
+        
+        <CopyProtection/>
 
         {/* <InitialLoader> */}
           <AnimationProvider>
