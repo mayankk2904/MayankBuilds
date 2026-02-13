@@ -149,6 +149,12 @@
   "credentials": {
     "certifications": [
       {
+        "name": "Cloud Technical Series: OnBoard Edition",
+        "issuer": "Google Cloud",
+        "date": "Feb 2026",
+        "logo": "/logos/google-cloud.png"
+      },
+      {
         "name": "IBM Data Engineering Specialization",
         "issuer": "IBM",
         "date": "April 2025",
