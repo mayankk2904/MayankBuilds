@@ -40,7 +40,7 @@ I enjoy working at the intersection of **AI + software engineering**, and I love
 
 ### 🤖 AI / ML
 - Machine Learning & Deep Learning   
-- LLMs (Gemma) 
+- LLMs (Gemini API for chatbot) 
 
 ### 🚀 Tools & Platforms hosted on
 - Git & GitHub   
